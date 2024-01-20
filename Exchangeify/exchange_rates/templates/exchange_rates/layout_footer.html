@@ -1,0 +1,111 @@
+{% load i18n %}
+{% load static %}
+
+
+{% if language_code == 'ar' %}
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-3">
+          <h3>روابط</h3>
+          <ul>
+            <li><a href="{% url 'contact' %}">تواصل معنا</a></li>
+            <li><a href="{% url 'about' %}">من نحن </a></li>
+            <li><a href="{% url 'privacy_policy' %}">سياسة الخصوصية</a></li>
+            <li><a href="{% url 'terms_conditions' %}">الشروط والأحكام</a></li>
+
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h3>تابعنا على :</h3>
+          <a
+            href="{{ links.facebook }}"
+            target="_blank"
+            onmousedown="ga('send', 'event', 'facebook', 'footer');"
+          >
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA81BMVEU7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg8Wpg9W5lIZJ9Qa6NTbaVUbqVZcqhac6hbdKlddqpheqxieq1je61lfa5of69uhbN2i7d4jLh+kruClb2Clr6HmcCZqMmaqsqgrs2hsM6kss+ruNOuutSwvNW0v9e1wdi6xNu+yN3M0+TS2ejX3erY3urw8/fz9fn29/r5+vz6+/38/P39/f79/v7+/v////8wmdH4AAAAIHRSTlMAAwYJDBgbJDAzSEtahIeNk5aZxsnMz9Xh5Orw8/b5/MXBmwEAAAE4SURBVDiNjZNpX8IwDMYD42aDuQPcYFB1Hngr3hfeTkTM9/80zjm3hI4f5l2e5982bROAJHK1pmX3+7bVrOVAjqLREUl0jOKMrWhdwaKrKWy5JaSwyCaVZdkXwqkk650sPyTiPfIZ+8en5CNAm+cLof34JVr/6sHl6H6Y3qUUAjrxV4bBBPEmFXSAgkcA/wXxI7hOBa8AKj1z6w2/ro4HRFHBoIAf4KfPyjTAJNnR7Rind+eHRDLBJdkjRnFBJBd6JHv4BU6J1GPA+sk7Ts921xhAjxCbAU52WJEuK1IMwlvsMcDk15QBgz+UDKj8qSUgfGpYIvn2GHGfAvrMd288vT7Tn4i+e2HDgNKe57fj1i+72b5b/mvramZbO9X/D05YR8Pjttdgo7d4eKMBqut2S4iWrdfzqfoNFEtvtPn6ziYAAAAASUVORK5CYII="
+              alt="صفحتنا على الفيسبوك"
+            />
+          </a>
+          <a
+            href="{{ links.telegram }}"
+            target="_blank"
+            onmousedown="ga('send', 'event', 'facebook', 'footer');"
+          >
+            <img 
+              width="33"
+              height="33"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAclBMVEX///8oqOknpuYkod4jn9slo+EjoNwkot8mpeQpqespquwop+gnp+cmpOMlouAnp+gAnN8ApOvt9vz4+/43qeUJm9rh8Pui0/VOs+2z2fMOoeNvvOvL5faJxu0AltiTzPN8w/HW6vldtei83fOYyutFqd84rg+kAAACcElEQVRIiZWX24KqMAxFOx50hDlCqlQh5abC///iBERpSinMfoI2q9mkF6sQLl3zWmdpFKWZrvOrM8ShopGkMIxIYRjSc1NswG6hHBBTBN/WMDnHRtaH3iPppAbJcNFwuZDtk7R0cxkVxC+ZXebYOVrDBp1n3CbMQUbh1yaFIXebJVszhhmv57Z8vcza3v/AETnN51fyFzBJ3twNkz8J2xGUyc+akh8jJpGXMeEahTLJ0CDHlLvkv08JYnmnvY1GG/ZcIX0Yyuz5+qCd2doXtvE4pWTvg+NihqGmFtwtCdPcWMxgdkHvfYECfTcXVyHNXnkVTzzOdUKsrW2QszjMRe3ICIbHZnzkcVgKbYMIj8ljgen4pHmQFtnJ8lhOHi8NdO/nlMdlIjWdUx2NfVqccNp8dimEMQo82AHYAD6M2bDB00dHXn5y/TBe8cRF3kchOzUbOEFjvN8s8CiyeD9qWl7ivsc98IFwbyruaDo+bwhpWVBxziXEe6hNTnQxA2k6auYBAdMUqAk5Jyyn9F0590Au4pcVpjPwIFpyV6tppFMOFtbwQOWA+Nuh+MFO7BvyXhjqFTuFTwPUVme/kQtwgzHoKWlqdQ2DotNrbyh+J70A71FDa6sWwO9P0jsPUa1zOIYO55k9Nozf0MK/ZUFzFlfFmtT7J0B4OAoj8ZZ4mt7Kix74a2Xs2lIdNkuxXdMF3pyGAr6KL4dgW74gsK46Z7WJDNT8orMlZxDMOHLbqWBFqnNcyfraVn6uWrgE0nwGnqQq8N2T22oBVVXrwfovbWmFzTHVur+OG9ZVNcE0TqWf69RL17zUHRX/0Oly4e/DL99pVpSHprz9AAAAAElFTkSuQmCC"
+              alt="قناتنا علي تيليجرام"
+            />
+          </a>
+
+
+        </div>
+        <div class="col-md-3 copyright">
+          <span
+            >جميع الحقوق محفوظة لموقع
+            <a href="{% url 'index' %}">سعر الصرف  </a> 2023-2024
+            <i class="fa fa-copyright"></i
+          ></span>
+        </div>
+      </div>
+    </div>
+  </div>
+{% elif language_code == 'en' %}
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+      
+        <div class="col-md-3">
+          <h3>Links</h3>
+          <ul>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+            <li><a href="{% url 'terms_conditions' %}">Terms and Conditions</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h3>Follow us on :</h3>
+          <a
+            href="{{ links.facebook }}"
+            target="_blank"
+            onmousedown="ga('send', 'event', 'facebook', 'footer');"
+          >
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA81BMVEU7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg7WZg8Wpg9W5lIZJ9Qa6NTbaVUbqVZcqhac6hbdKlddqpheqxieq1je61lfa5of69uhbN2i7d4jLh+kruClb2Clr6HmcCZqMmaqsqgrs2hsM6kss+ruNOuutSwvNW0v9e1wdi6xNu+yN3M0+TS2ejX3erY3urw8/fz9fn29/r5+vz6+/38/P39/f79/v7+/v////8wmdH4AAAAIHRSTlMAAwYJDBgbJDAzSEtahIeNk5aZxsnMz9Xh5Orw8/b5/MXBmwEAAAE4SURBVDiNjZNpX8IwDMYD42aDuQPcYFB1Hngr3hfeTkTM9/80zjm3hI4f5l2e5982bROAJHK1pmX3+7bVrOVAjqLREUl0jOKMrWhdwaKrKWy5JaSwyCaVZdkXwqkk650sPyTiPfIZ+8en5CNAm+cLof34JVr/6sHl6H6Y3qUUAjrxV4bBBPEmFXSAgkcA/wXxI7hOBa8AKj1z6w2/ro4HRFHBoIAf4KfPyjTAJNnR7Rind+eHRDLBJdkjRnFBJBd6JHv4BU6J1GPA+sk7Ts921xhAjxCbAU52WJEuK1IMwlvsMcDk15QBgz+UDKj8qSUgfGpYIvn2GHGfAvrMd288vT7Tn4i+e2HDgNKe57fj1i+72b5b/mvramZbO9X/D05YR8Pjttdgo7d4eKMBqut2S4iWrdfzqfoNFEtvtPn6ziYAAAAASUVORK5CYII="
+              alt="صفحتنا على الفيسبوك"
+            />
+          </a>
+
+          <a
+          href="{{ links.telegram }}"
+          target="_blank"
+          onmousedown="ga('send', 'event', 'facebook', 'footer');"
+        >
+          <img 
+            width="33"
+            height="33"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAclBMVEX///8oqOknpuYkod4jn9slo+EjoNwkot8mpeQpqespquwop+gnp+cmpOMlouAnp+gAnN8ApOvt9vz4+/43qeUJm9rh8Pui0/VOs+2z2fMOoeNvvOvL5faJxu0AltiTzPN8w/HW6vldtei83fOYyutFqd84rg+kAAACcElEQVRIiZWX24KqMAxFOx50hDlCqlQh5abC///iBERpSinMfoI2q9mkF6sQLl3zWmdpFKWZrvOrM8ShopGkMIxIYRjSc1NswG6hHBBTBN/WMDnHRtaH3iPppAbJcNFwuZDtk7R0cxkVxC+ZXebYOVrDBp1n3CbMQUbh1yaFIXebJVszhhmv57Z8vcza3v/AETnN51fyFzBJ3twNkz8J2xGUyc+akh8jJpGXMeEahTLJ0CDHlLvkv08JYnmnvY1GG/ZcIX0Yyuz5+qCd2doXtvE4pWTvg+NihqGmFtwtCdPcWMxgdkHvfYECfTcXVyHNXnkVTzzOdUKsrW2QszjMRe3ICIbHZnzkcVgKbYMIj8ljgen4pHmQFtnJ8lhOHi8NdO/nlMdlIjWdUx2NfVqccNp8dimEMQo82AHYAD6M2bDB00dHXn5y/TBe8cRF3kchOzUbOEFjvN8s8CiyeD9qWl7ivsc98IFwbyruaDo+bwhpWVBxziXEe6hNTnQxA2k6auYBAdMUqAk5Jyyn9F0590Au4pcVpjPwIFpyV6tppFMOFtbwQOWA+Nuh+MFO7BvyXhjqFTuFTwPUVme/kQtwgzHoKWlqdQ2DotNrbyh+J70A71FDa6sWwO9P0jsPUa1zOIYO55k9Nozf0MK/ZUFzFlfFmtT7J0B4OAoj8ZZ4mt7Kix74a2Xs2lIdNkuxXdMF3pyGAr6KL4dgW74gsK46Z7WJDNT8orMlZxDMOHLbqWBFqnNcyfraVn6uWrgE0nwGnqQq8N2T22oBVVXrwfovbWmFzTHVur+OG9ZVNcE0TqWf69RL17zUHRX/0Oly4e/DL99pVpSHprz9AAAAAElFTkSuQmCC"
+            alt="قناتنا علي تيليجرام"
+          />
+        </a>
+        </div>
+        <div class="col-md-3 copyright">
+          <span >
+          All rights reserved for <a  href="{% url 'index' %}"> sarf today </a> 
+          </span>
+          <br>
+          <span>
+            2023-2024
+            <i class="fa fa-copyright"> </i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endif %}

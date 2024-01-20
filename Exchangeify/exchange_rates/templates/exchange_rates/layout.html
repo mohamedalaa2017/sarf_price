@@ -1,0 +1,59 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %} {% endblock %}</title>
+
+        {% get_current_language as language_code %}
+        {% if language_code == 'ar' %}
+
+
+            <link href="{% static 'exchange_rates/css/bootstrap.min.css' %}" rel="stylesheet" />
+            <link rel="stylesheet" href="{% static 'exchange_rates/css/bootstrap.rtl.css' %}" />
+            <link rel="stylesheet" href="{% static 'exchange_rates/css/main3860.css' %}" />
+            <link rel="stylesheet" href="{% static 'exchange_rates/css/font-awesome.min.css' %}" />
+            <link rel="stylesheet" href="{% static 'exchange_rates/css/en/font-awesome.min.css' %}">
+
+        {% elif language_code == 'en' %}
+            <link href="{% static 'exchange_rates/css/bootstrap.min.css' %}" rel="stylesheet" />
+            <link rel="stylesheet" href="{% static 'exchange_rates/css/en/font-awesome.min.css' %}">
+            <link rel="stylesheet" href="{% static 'exchange_rates/css/en/main-new.css' %}">
+        {% endif %}
+
+
+
+        {% block head %}
+        {% endblock %}
+
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    
+    </head>
+    <body>
+        
+        
+        {% include 'exchange_rates/layout_nav.html' %}
+
+        {% block body %}
+        {% endblock %}
+
+        {% include 'exchange_rates/layout_footer.html' %}
+        
+        
+        <!-- <script src="{% static 'exchange_rates/js/bootstrap.min.js' %}"></script> -->
+        <script src="{% static 'exchange_rates/js/main.js' %}"></script>
+
+
+
+        
+    </body>
+</html>

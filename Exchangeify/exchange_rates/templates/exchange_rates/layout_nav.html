@@ -1,0 +1,541 @@
+{% load static %}
+
+
+
+{% if language_code == 'ar' %}
+  <header class="navbar-fixed-top">
+    <div class="bottom-nav-container">
+      <nav class="navbar navbar-default bottom-nav" id="navbar">
+        <div class="container">
+          <div class="navbar-header">
+            <button
+              type="button"
+              class="navbar-toggle collapsed mobile-nav-button"
+              data-toggle="collapse"
+              data-target="#myNavbar"
+              aria-expanded="false"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+          </div>
+          <div class="row">
+            <div class="col-md-3 logo-container">
+              <a href="{% url 'index' %}" class="logo"><img src="{% static 'exchange_rates/images/final.png' %}" /></a>
+              <div class="btn-group version-btn-group">
+                <button
+                  type="button"
+                  class="btn dropdown-toggle site-version"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  مصر
+                </button>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                  <li>
+                    <a href="{% url 'currencies' %}"><span>العملات </span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'gold' %}"><span>الذهب </span></a>
+                  </li>
+                  <li>
+                    <a
+                      href="{% url 'fuel' %}"
+                      onmousedown="ga('send', 'event', 'fuel', 'header-en');"
+                    >
+                      <span>المحروقات</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'news' %}"><span>الأخبار</span></a>
+                  </li>
+                  <li>
+                    
+                    <a href="{% url 'currencies_currency' 'US Dollar' %}"><span>دولار</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'currencies_currency' 'Euro' %}"><span>يورو</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'currencies_currency' 'Turkish Lira' %}"><span>ليرة تركية</span></a>
+                  </li>
+                  <li id="for_remove_this_if_news">
+                    <a
+                      href="#"
+                      class="lang-switcher"
+                      onclick="changeLanguage(event)"
+                      ><span>English</span></a
+                    >
+                  </li>
+                  <li class="h-social-icons">
+                    <a
+                      href="{{ links.facebook }}"
+                      target="_blank"
+                      onmousedown="ga('send', 'event', 'facebook', 'header');"
+                      ><i class="fa fa-facebook-square"></i
+                    ></a>
+                  </li>
+                  <li class="h-social-icons">
+                    <a
+                      href="{{ links.telegram }}"
+                      target="_blank"
+                      onmousedown="ga('send', 'event', 'telegram', 'header');"
+                      ><i class="fa fa-telegram"></i
+                    ></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="rate-data">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'US Dollar' 'market' %}">
+              <span class="name">دولار السوق </span>
+              <div class="line-data">
+                <span class="value">{{ us_dollar_currency_prices.information.sell_market_price }}</span>
+              </div>
+              <div class="change">
+                <span class="up">{{ us_dollar_currency_prices.market_percentage }}</span> 
+                <span>{{ us_dollar_currency_prices.market_value_in_parentheses }}</span>
+
+              
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'US Dollar' 'bank' %}">
+              <span class="name">دولار البنك </span>
+              <div class="line-data">
+                <span class="value">{{ us_dollar_currency_prices.information.sell_bank_price }}</span>
+              </div>
+              <div class="change">
+                <span class="up">{{ us_dollar_currency_prices.bank_percentage }}</span>
+                <span>{{ us_dollar_currency_prices.bank_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'Euro' 'market' %}">
+              <span class="name">يورو السوق </span>
+              <div class="line-data">
+                <span class="value">{{ euro_currency_prices.information.sell_market_price }}</span>
+              </div>
+              <div class="change">
+                <span class="down-hd">{{ euro_currency_prices.market_percentage }}</span>
+                <span>{{ euro_currency_prices.market_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'Euro' 'bank' %}">
+              <span class="name">يورو البنك </span>
+              <div class="line-data">
+                <span class="value">{{ euro_currency_prices.information.sell_bank_price }} </span>
+              </div>
+              <div class="change">
+                <span class="down-hd">{{ euro_currency_prices.bank_percentage }}</span>
+                <span>{{ euro_currency_prices.bank_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'gold_details' '21Karat' %}">
+              <span class="name">غرام الذهب </span>
+              <div class="line-data">
+                <span class="value">{{ gold_karat_21.information.sell_price }}</span>
+              </div>
+              <div class="change">
+                
+                <!-- <span class="up-hd"> {{ gold_karat_21.percentage }}</span> -->
+                <span class="up"> {{ gold_karat_21.percentage }}</span>
+                <span> {{ gold_karat_21.value_in_parentheses }} </span>
+
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'gold' %}">
+              <span class="name">أونصة الذهب </span>
+              <div class="line-data">
+                <span class="value">${{ gold_ounce.information.buy_price }}</span>
+              </div>
+              <div class="change">
+                {% if gold_ounce.percentage%}                
+                  <span class="up"> {{ gold_ounce.percentage }} </span>
+                  <span>{{ gold_ounce.value_in_parentheses }}</span>
+                {% else %}
+                  <span class="up"> 0.05% </span>
+                  <span> ($1) </span>  
+                {% endif %}
+
+                  
+
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'fuel_details' 'Octane 95' %}">
+              <span class="name">  بنزين 95</span>
+              <div class="line-data">
+                <span class="value">{{ octane_95.information.buy_price}}</span>
+              </div>
+              <div class="change">
+                <span class="down-hd"> {{ octane_95.percentage }} </span>
+                <span>{{ octane_95.value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'fuel_details' 'Solar' %}">
+              <span class="name">سولار </span>
+              <div class="line-data">
+                <span class="value">{{ solar.information.buy_price  }}</span>
+              </div>
+              <div class="change">
+                <span class="down-hd"> {{ solar.percentage }} </span>
+                <span>{{ solar.value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="#">
+              <span class="name">بيتكوين </span>
+              <div class="line-data">
+                <span class="value">$34,167</span>
+              </div>
+              <div class="change">
+                <span class="down-hd">%</span>
+                <span>($)</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- adds  -->
+  <div style="margin-top: 150px"></div>
+  <div class="header-ad">
+    <script
+      async
+      src=""
+      crossorigin="anonymous"
+    ></script>
+
+    <ins
+      class="adsbygoogle"
+      style="display: block"
+      data-ad-client="ca-pub-3906421888093463"
+      data-ad-slot="6405618831"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    ></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <!-- for follow as  -->
+  <div
+    class="modal fade"
+    id="join_tme"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>تابعنا على قناتنا على تيليجرام لتبقى على اطلاع بالتحديثات</p>
+          <a target="_blank" href="{{ links.telegram }}">
+            <i class="fa fa-telegram fa-5x"></i>
+            <p>انقر هنا</p>
+          </a>
+          <p class="close-modal" href="#" data-dismiss="modal">إغلاق</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% elif language_code == 'en' %}
+  <header class="navbar-fixed-top">
+    <div class="bottom-nav-container">
+      <nav class="navbar navbar-default bottom-nav" id="navbar">
+        <div class="container">
+          <div class="navbar-header">
+            <button
+              type="button"
+              class="navbar-toggle collapsed mobile-nav-button"
+              data-toggle="collapse"
+              data-target="#myNavbar"
+              aria-expanded="false"
+            >
+              <i class="fa fa-bars"></i>
+            </button>
+          </div>
+          <div class="row">
+            <div class="col-md-3 logo-container">
+              <a href="{% url 'index' %}" class="logo"><img src="{% static 'exchange_rates/images/final.png' %}" /></a>
+              <div class="btn-group version-btn-group">
+                <button
+                  type="button"
+                  class="btn dropdown-toggle site-version"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Egypt
+                </button>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                  <li>
+                    <a href="{% url 'currencies' %}"><span>Exchange Rates </span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'gold' %}"><span>Gold </span></a>
+                  </li>
+                  <li>
+                    <a
+                      href="{% url 'fuel' %}"
+                      onmousedown="ga('send', 'event', 'fuel', 'header-en');"
+                    >
+                      <span>Fuel</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{% url 'news' %}"><span>News</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'currencies_currency' 'US Dollar' %}"><span>Dollar</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'currencies_currency' 'Euro' %}"><span>Euro</span></a>
+                  </li>
+                  <li>
+                    <a href="{% url 'currencies_currency' 'Turkish Lira' %}"
+                      ><span>Turkish Lira</span></a
+                    >
+                  </li>
+                  <li >
+                    <a
+                      href="#"
+                      class="lang-switcher"
+                      onclick="changeLanguage(event)"
+                      ><span>عربي</span></a
+                    >
+                  </li>
+                  <li class="h-social-icons">
+                    <a
+                      href="{{ links.facebook }}"
+                      target="_blank"
+                      onmousedown="ga('send', 'event', 'facebook', 'header');"
+                      ><i class="fa fa-facebook-square"></i
+                    ></a>
+                  </li>
+                  <li class="h-social-icons">
+                    <a
+                      href="{{ links.telegram }}"
+                      target="_blank"
+                      onmousedown="ga('send', 'event', 'telegram', 'header');"
+                      ><i class="fa fa-telegram"></i
+                    ></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="rate-data">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'US Dollar' 'market' %}">
+              <span class="name">USD Market </span>
+              <div class="line-data">
+                <span class="value">{{ us_dollar_currency_prices.information.sell_market_price }}</span>
+              </div>
+              <div class="change">
+                <span class="up">{{ us_dollar_currency_prices.market_percentage }}</span> 
+                <span>{{ us_dollar_currency_prices.market_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'US Dollar' 'bank' %}">
+              <span class="name">USD Bank </span>
+              <div class="line-data">
+                <span class="value">{{ us_dollar_currency_prices.information.sell_bank_price }}</span>
+              </div>
+              <div class="change">
+                <span class="up">{{ us_dollar_currency_prices.bank_percentage }}</span>
+                <span>{{ us_dollar_currency_prices.bank_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'Euro' 'market' %}">
+              <span class="name">EUR Market </span>
+              <div class="line-data">
+                <span class="value">{{ euro_currency_prices.information.sell_market_price }}</span>
+              </div>
+              <div class="change">
+                <span class="down-hd">{{ euro_currency_prices.market_percentage }}</span>
+                <span>{{ euro_currency_prices.market_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'currencies_currency_type' 'Euro' 'bank' %}">
+              <span class="name">EUR Bank </span>
+              <div class="line-data">
+                <span class="value">{{ euro_currency_prices.information.sell_bank_price }} </span>
+              </div>
+              <div class="change">
+                <span class="down-hd">{{ euro_currency_prices.bank_percentage }}</span>
+                <span>{{ euro_currency_prices.bank_value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'gold_details' '21Karat' %}">
+              <span class="name">gold gram </span>
+              <div class="line-data">
+                <span class="value">{{ gold_karat_21.information.sell_price }}</span>
+              </div>
+              <div class="change">
+                <span class="up"> {{ gold_karat_21.percentage }}</span>
+                <span> {{ gold_karat_21.value_in_parentheses }} </span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'gold' %}">
+              <span class="name">gold ounce </span>
+              <div class="line-data">
+                <span class="value">{{ gold_ounce.information.buy_price }}$</span>
+              </div>
+              <div class="change">
+                {% if gold_ounce.percentage%}                
+                  <span class="up"> {{ gold_ounce.percentage }} </span>
+                  <span>{{ gold_ounce.value_in_parentheses }}</span>
+                {% else %}
+                  <span class="up"> 0.05% </span>
+                  <span> ($1) </span>  
+                {% endif %}            
+              </div>
+
+              
+
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'fuel_details' 'Octane 95' %}">
+              <span class="name">Benzin 95</span>
+              <div class="line-data">
+                <span class="value">{{ octane_95.information.buy_price}}</span>
+              </div>
+              <div class="change">
+                <span class="down-hd"> {{ octane_95.percentage }} </span>
+                <span>{{ octane_95.value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="{% url 'fuel_details' 'Solar' %}">
+              <span class="name">Solar </span>
+              <div class="line-data">
+                <span class="value">{{ solar.information.buy_price  }}</span>
+              </div>
+              <div class="change">
+                <span class="down-hd"> {{ solar.percentage }} </span>
+                <span>{{ solar.value_in_parentheses }}</span>
+              </div>
+            </a>
+          </div>
+
+
+          <div class="col-xs-2 col-md-1 item-data">
+            <a href="https://sp-today.com/crypto">
+              <span class="name">Bitcoin </span>
+              <div class="line-data">
+                <span class="value">$34,167</span>
+              </div>
+              <div class="change">
+                <span class="down-hd">%</span>
+                <span>($)</span>
+              </div>
+            </a>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- adds  -->
+  <div style="margin-top: 150px"></div>
+  <div class="header-ad">
+    <script
+      async
+      src=""
+      crossorigin="anonymous"
+    ></script>
+  
+    <ins
+      class="adsbygoogle"
+      style="display: block"
+      data-ad-client="ca-pub-3906421888093463"
+      data-ad-slot="6405618831"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    ></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+
+  <!-- for follow as  -->
+  <div
+    class="modal fade"
+    id="join_tme"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myModalLabel"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <p>Follow us on Telegram</p>
+          <a target="_blank" href="{{ links.telegram }}">
+            <i class="fa fa-telegram fa-5x"></i>
+            <p>click here</p>
+          </a>
+          <p class="close-modal" href="#" data-dismiss="modal">close</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endif %}
+
+
+
+ 

@@ -1,0 +1,474 @@
+{% extends 'exchange_rates/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block body %}
+
+  {% if language_code == 'ar' %}
+    <div class="container cur-container">
+      <div class="row">
+        <div
+          class="breadcrumbs"
+          typeof="BreadcrumbList"
+          vocab="https://schema.org/"
+        >
+          <span property="itemListElement" typeof="ListItem">
+            <a
+              property="item"
+              typeof="WebPage"
+              title="اذهب إلى سعر الصرف"
+              href="{% url 'index' %}"
+              class="home"
+            >
+              <span property="name"> سعر الصرف </span>
+            </a>
+            <meta property="position" content="1" />
+          </span>
+          »
+          <span property="itemListElement" typeof="ListItem">
+            <a
+              property="item"
+              typeof="WebPage"
+              title=" اذهب لصفحة الوقود"
+              href="{% url 'fuel' %}"
+              class="taxonomy category"
+            >
+              <span property="name">الوقود</span>
+            </a>
+            <meta property="position" content="2" />
+          </span>
+          »
+          <span class="post post-post current-item">
+            سعر {{ fuel.fuel.name_ar}} اليوم في مصر
+          </span>
+        </div>
+        <div class="col-md-8 cur-info-container">
+          <div class="cur-header">
+            <div>
+              <h1> {{ fuel.fuel.name_ar}} / جنيه مصري </h1>
+              <h2></h2>   سعر {{ fuel.fuel.name_ar}}  في مصر لحظة بلحظة </h2>
+            </div>
+          </div>
+          <div class="cur-data">
+            <div class="row-data">
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">شراء </span>
+                <span class="value"> {{ fuel.buy_price }}</span>
+              </div>
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">مبيع </span>
+                <span class="value"> {{ fuel.buy_price }} </span>
+              </div>
+              <div class="gold-col col-md-4 col-sm-12">
+                <span>
+                  <svg
+                    class="arrow down"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 12 8"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentcolor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="m1 6 5-4 5 4"
+                    ></path>
+                  </svg>
+                </span>
+                <span class="down">{{ fuel.change }}</span>
+              </div>
+            </div>
+            <div class="row-data cur-extra-data">
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">الإغلاق السابق </span>
+                <span class="value">{{ fuel.prev_close }}</span>
+              </div>
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">المدى اليومي </span>
+                <span class="value"> {{ fuel.day_range }}</span>
+              </div>
+            </div>
+          </div>
+          <div id="chartContainer" class="chart"></div>
+        </div>
+        <div class="col-md-4">
+          <div class="panel panel-default converter">
+            <div class="panel-heading">محول العملات</div>
+            <div class="panel-heading sell_buy">
+              <div class="sell-input">
+                <label for="sell_radio">
+                  <input
+                    id="sell_radio"
+                    value="sell"
+                    name="sell_buy_radio"
+                    type="radio"
+                  />
+                  شراء
+                </label>
+              </div>
+              <div class="buy-input">
+                <label for="buy_radio">
+                  <input
+                    id="buy_radio"
+                    value="buy"
+                    name="sell_buy_radio"
+                    checked="checked"
+                    type="radio"
+                  />
+                  مبيع
+                </label>
+              </div>
+            </div>
+            <div class="panel-body">
+              <input
+                type="number"
+                id="f_amount"
+                class="result1 form-control"
+                autocomplete="off"
+                placeholder="المبلغ هنا ..."
+              />
+              <select
+                name="cur2"
+                id="from"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option value="USD">دولار أمريكي</option>
+                <option value="EUR">يورو</option>
+                <option value="TRY">ليرة تركية</option>
+                <option value="SAR">ريال سعودي</option>
+                <option value="AED">درهم إماراتي</option>
+                <option value="LYD">دينار ليبي</option>
+                <option value="JOD">دينار أردني</option>
+                <option value="KWD">دينار كويتي</option>
+                <option value="GBP">جنيه استرليني</option>
+                <option value="QAR">ريال قطري</option>
+                <option value="OMR">ريال عماني</option>
+                <option value="BHD">دينار بحريني</option>
+                <option value="CAD">دولار كندي</option>
+                <option value="SEK">كرون سويدي</option>
+                <option value="NOK">كرون نرويجي</option>
+                <option value="DKK">كرون دينماركي</option>
+                <option value="SYP">ليرة سورية</option>
+                <option value="DZD">دينار جزائري</option>
+                <option value="MAD">درهم مغربي</option>
+                <option value="TND">دينار تونسي</option>
+                <option value="RUB">روبل روسي</option>
+                <option value="MYR">رينغيت ماليزي</option>
+                <option value="BRL">ريال برازيلي</option>
+                <option value="NZD">دولار نيوزيلاندي</option>
+                <option value="CHF">فرنك سويسري</option>
+                <option value="AUD">دولار أسترالي</option>
+                <option value="ZAR">راند جنوب أفريقي</option>
+                <option value="IQD">دينار عراقي</option>
+                <option value="IRR">ريال إيراني</option>
+                <option value="SGD">دولار سينغافوري</option>
+                <option value="EGP">جنيه مصري</option>
+              </select>
+              <input
+                type="number"
+                class="result2 resultval2 form-control"
+                id="t_amount"
+                placeholder="المبلغ هنا  ..."
+              />
+              <select
+                name="cur2"
+                id="to"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option selected value="EGP">جنيه مصري</option>
+                <option value="USD">دولار أمريكي</option>
+                <option value="EUR">يورو</option>
+                <option value="TRY">ليرة تركية</option>
+                <option value="SAR">ريال سعودي</option>
+                <option value="AED">درهم إماراتي</option>
+                <option value="LYD">دينار ليبي</option>
+                <option value="JOD">دينار أردني</option>
+                <option value="KWD">دينار كويتي</option>
+                <option value="GBP">جنيه استرليني</option>
+                <option value="QAR">ريال قطري</option>
+                <option value="OMR">ريال عماني</option>
+                <option value="BHD">دينار بحريني</option>
+                <option value="CAD">دولار كندي</option>
+                <option value="SEK">كرون سويدي</option>
+                <option value="NOK">كرون نرويجي</option>
+                <option value="DKK">كرون دينماركي</option>
+                <option value="SYP">ليرة سورية</option>
+                <option value="DZD">دينار جزائري</option>
+                <option value="MAD">درهم مغربي</option>
+                <option value="TND">دينار تونسي</option>
+                <option value="RUB">روبل روسي</option>
+                <option value="MYR">رينغيت ماليزي</option>
+                <option value="BRL">ريال برازيلي</option>
+                <option value="NZD">دولار نيوزيلاندي</option>
+                <option value="CHF">فرنك سويسري</option>
+                <option value="AUD">دولار أسترالي</option>
+                <option value="ZAR">راند جنوب أفريقي</option>
+                <option value="IQD">دينار عراقي</option>
+                <option value="IRR">ريال إيراني</option>
+                <option value="SGD">دولار سينغافوري</option>
+              </select>
+            </div>
+          </div>
+          <div class="content1-ad">
+            <script
+              async
+              src="../../pagead2.googlesyndication.com/pagead/js/f.txt"
+            ></script>
+
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-"
+              data-ad-slot
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  {% elif language_code == 'en' %}
+    <div class="container cur-container">
+      <div class="row">
+        <div
+          class="breadcrumbs"
+          typeof="BreadcrumbList"
+          vocab="https://schema.org/"
+        >
+          <span property="itemListElement" typeof="ListItem">
+            <a
+              property="item"
+              typeof="WebPage"
+              title="Go to Sarf Price"
+              href="{% url 'index' %}"
+              class="home"
+            >
+              <span property="name">Sarf Price </span>
+            </a>
+            <meta property="position" content="1" />
+          </span>
+          »
+          <span property="itemListElement" typeof="ListItem">
+            <a
+              property="item"
+              typeof="WebPage"
+              title=" Go to fuel prices page"
+              href="{% url 'fuel' %}"
+              class="taxonomy category"
+            >
+              <span property="name">Fuel</span>
+            </a>
+            <meta property="position" content="2" />
+          </span>
+          »
+          <span class="post post-post current-item">
+            {{ fuel.fuel.name }} price in Egypt
+          </span>
+        </div>
+        <div class="col-md-8 cur-info-container">
+          <div class="cur-header">
+            <div>
+              <h1>{{ fuel.fuel.name }} / Egyptian Pound</h1>
+              <h2>{{ fuel.fuel.name }} price in Egypt</h2>
+            </div>
+          </div>
+          <div class="cur-data">
+            <div class="row-data">
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">Buy </span>
+                <span class="value"> {{ fuel.buy_price }}</span>
+              </div>
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">Sell </span>
+                <span class="value">{{ fuel.sell_price }}</span>
+              </div>
+              <div class="gold-col col-md-4 col-sm-12">
+                <span>
+                  <svg
+                    class="arrow down"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 12 8"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentcolor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="m1 6 5-4 5 4"
+                    ></path>
+                  </svg>
+                </span>
+                <span class="down">{{ fuel.change }}</span>
+              </div>
+            </div>
+            <div class="row-data cur-extra-data">
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">Prev. close </span>
+                <span class="value">{{ fuel.prev_close }}</span>
+              </div>
+              <div class="gold-col col-md-4 col-sm-12">
+                <span class="label">Day's range </span>
+                <span class="value">{{ fuel.day_range }}</span>
+              </div>
+            </div>
+          </div>
+          <div id="chartContainer" class="chart"></div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="panel panel-default converter">
+            <div class="panel-heading">Currency Converter</div>
+            <div class="panel-heading sell_buy">
+              <div class="sell-input">
+                <label for="sell_radio">
+                  <input
+                    id="sell_radio"
+                    value="sell"
+                    name="sell_buy_radio"
+                    type="radio"
+                  />
+                  Buy
+                </label>
+              </div>
+              <div class="buy-input">
+                <label for="buy_radio">
+                  <input
+                    id="buy_radio"
+                    value="buy"
+                    name="sell_buy_radio"
+                    checked="checked"
+                    type="radio"
+                  />
+                  Sell
+                </label>
+              </div>
+            </div>
+            <div class="panel-body">
+              <input
+                type="number"
+                id="f_amount"
+                class="result1 form-control"
+                autocomplete="off"
+                placeholder="Amount here ..."
+              />
+              <select
+                name="cur2"
+                id="from"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option value="USD">US Dollar</option>
+                <option value="EUR">Euro</option>
+                <option value="TRY">Turkish Lira</option>
+                <option value="SAR">Saudi Riyal</option>
+                <option value="AED">Emirate Dirham</option>
+                <option value="LYD">Libyan Dinar</option>
+                <option value="JOD">Jordanian Dinar</option>
+                <option value="KWD">Kuwaiti Dinar</option>
+                <option value="GBP">British Pound</option>
+                <option value="QAR">Qatari Riyal</option>
+                <option value="OMR">Omani Riyal</option>
+                <option value="BHD">Bahraini Dinar</option>
+                <option value="CAD">Canadian Dollar</option>
+                <option value="SEK">Swedish Krona</option>
+                <option value="NOK">Norwegian Krone</option>
+                <option value="DKK">Danish Krone</option>
+                <option value="SYP">Syrian Pound</option>
+                <option value="DZD">Algerian Dinar</option>
+                <option value="MAD">Moroccan Dirham</option>
+                <option value="TND">Tunisian Dinar</option>
+                <option value="RUB">Russian Ruble</option>
+                <option value="MYR">Malaysian Ringgit</option>
+                <option value="BRL">Brazilian Real</option>
+                <option value="NZD">New Zealand Dollar</option>
+                <option value="CHF">Swiss Franc</option>
+                <option value="AUD">Australian Dollar</option>
+                <option value="ZAR">South African Rand</option>
+                <option value="IQD">Iraqi Dinar</option>
+                <option value="IRR">Iranian Rial</option>
+                <option value="SGD">Singapore Dollar</option>
+                <option value="EGP">Egyptian Pound</option>
+              </select>
+              <input
+                type="number"
+                class="result2 resultval2 form-control"
+                id="t_amount"
+                placeholder="Amount here  ..."
+              />
+              <select
+                name="cur2"
+                id="to"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option selected value="EGP">Egyptian Pound</option>
+                <option value="USD">US Dollar</option>
+                <option value="EUR">Euro</option>
+                <option value="TRY">Turkish Lira</option>
+                <option value="SAR">Saudi Riyal</option>
+                <option value="AED">Emirate Dirham</option>
+                <option value="LYD">Libyan Dinar</option>
+                <option value="JOD">Jordanian Dinar</option>
+                <option value="KWD">Kuwaiti Dinar</option>
+                <option value="GBP">British Pound</option>
+                <option value="QAR">Qatari Riyal</option>
+                <option value="OMR">Omani Riyal</option>
+                <option value="BHD">Bahraini Dinar</option>
+                <option value="CAD">Canadian Dollar</option>
+                <option value="SEK">Swedish Krona</option>
+                <option value="NOK">Norwegian Krone</option>
+                <option value="DKK">Danish Krone</option>
+                <option value="SYP">Syrian Pound</option>
+                <option value="DZD">Algerian Dinar</option>
+                <option value="MAD">Moroccan Dirham</option>
+                <option value="TND">Tunisian Dinar</option>
+                <option value="RUB">Russian Ruble</option>
+                <option value="MYR">Malaysian Ringgit</option>
+                <option value="BRL">Brazilian Real</option>
+                <option value="NZD">New Zealand Dollar</option>
+                <option value="CHF">Swiss Franc</option>
+                <option value="AUD">Australian Dollar</option>
+                <option value="ZAR">South African Rand</option>
+                <option value="IQD">Iraqi Dinar</option>
+                <option value="IRR">Iranian Rial</option>
+                <option value="SGD">Singapore Dollar</option>
+              </select>
+            </div>
+          </div>
+          <div class="content1-ad">
+            <script
+              async
+              src="../../../pagead2.googlesyndication.com/pagead/js/f.txt"
+            ></script>
+    
+            <ins
+              class="adsbygoogle"
+              style="display: block"
+              data-ad-client="ca-pub-"
+              data-ad-slot
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+{% endblock %}
+
+
+
+
+
+

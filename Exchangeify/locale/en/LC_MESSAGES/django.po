@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-28 08:00+0200\n"
+"PO-Revision-Date: 2023-12-28 08:01+0200\n"
+"Last-Translator:   <admin@admin.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: .\exchange_rates\templates\exchange_rates\about_as.html:10
+msgid "من نحن"
+msgstr "About Us"
+
+#: .\exchange_rates\templates\exchange_rates\contact.html:39
+msgid "اتصل بنا"
+msgstr "Contanct Us"
+
+#: .\exchange_rates\templates\exchange_rates\currencies.html:14
+msgid "أسعار الصرف في السوق الموازية"
+msgstr "Exchange rates in market"
+
+#: .\exchange_rates\templates\exchange_rates\currencies.html:25
+msgid "عملة "
+msgstr "Currency"
+
+#: .\exchange_rates\templates\exchange_rates\currencies.html:29
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:104
+#: .\exchange_rates\templates\exchange_rates\gold.html:38
+msgid "شراء"
+msgstr "buy"
+
+#: .\exchange_rates\templates\exchange_rates\currencies.html:30
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:105
+#: .\exchange_rates\templates\exchange_rates\gold.html:39
+msgid "مبيع"
+msgstr "sell "
+
+#: .\exchange_rates\templates\exchange_rates\currencies.html:31
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:106
+#: .\exchange_rates\templates\exchange_rates\fuel.html:29
+#: .\exchange_rates\templates\exchange_rates\gold.html:40
+msgid "الفرق"
+msgstr "change"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:87
+msgid " سعر "
+msgstr "price"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:90
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:198
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:200
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:212
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:223
+#: .\exchange_rates\templates\exchange_rates\currencies_currency_type.html:421
+#: .\exchange_rates\templates\exchange_rates\currencies_currency_type.html:432
+msgid "جنيه مصري"
+msgstr "Egyptian Pound"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:92
+#: .\exchange_rates\templates\exchange_rates\fuel.html:28
+msgid "سعر"
+msgstr "price"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:92
+msgid " اليوم في مصر"
+msgstr "today in Egypt"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:120
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:122
+msgid "السوق الموازية"
+msgstr "market"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency.html:193
+msgid "اضغط على المدينة لمشاهدة الرسم البياني"
+msgstr "Click on Place to see historical graph"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency_type.html:398
+#: .\exchange_rates\templates\exchange_rates\currencies_currency_type.html:405
+msgid "الجنيه مصري في  السوق الموازية"
+msgstr "Egyptian Pound in market"
+
+#: .\exchange_rates\templates\exchange_rates\currencies_currency_type.html:400
+#: .\exchange_rates\templates\exchange_rates\currencies_currency_type.html:407
+msgid "الجنيه مصري في البنك المركزي"
+msgstr "Egyptian Pound in bank"
+
+#: .\exchange_rates\templates\exchange_rates\fuel.html:21
+msgid "أسعار المحروقات في مصر"
+msgstr "Fuel prices in Egypt"
+
+#: .\exchange_rates\templates\exchange_rates\gold.html:31
+msgid "أسعار الذهب في مصر"
+msgstr "Gold prices in Egypt"
+
+#: .\exchange_rates\templates\exchange_rates\privacy_policy.html:15
+msgid "سياسة الخصوصية"
+msgstr "Privacy Policy"
+
+#: .\exchange_rates\templates\exchange_rates\terms_conditions.html:13
+msgid "الشروط والأحكام"
+msgstr "Terms and Conditions"
+
+#~ msgid "إبحث عن عملة "
+#~ msgstr "Search"
+
+#, fuzzy
+#~ msgid "البنك المركزي"
+#~ msgstr "market"
+
+#~ msgid "دولار أمريكي البنك المركزي"
+#~ msgstr "Exchange rates in bank"
+
+#~ msgid "الي "
+#~ msgstr "to"
+
+#, fuzzy
+#~ msgid "الي"
+#~ msgstr "to"

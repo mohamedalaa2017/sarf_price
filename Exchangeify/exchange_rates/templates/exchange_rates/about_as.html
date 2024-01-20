@@ -1,0 +1,30 @@
+{% extends 'exchange_rates/layout.html' %} 
+{% load i18n %} 
+{% load static %} 
+
+{% block body %}
+
+        <div class="container">
+            <div class="row">
+            <div class="col-md-12">
+                <h2>{% trans 'من نحن' %}</h2>
+                <br />
+                <div class="about-us-content">
+                    {% if language_code == 'ar' %}
+                        {{ about.about_ar|safe }}
+                    {% elif language_code == 'en' %}
+                        {{ about.about|safe }}
+                    {% endif %} 
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
+            </div>
+        </div>
+    
+
+
+
+{% endblock %}

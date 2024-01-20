@@ -1,0 +1,216 @@
+{% extends 'exchange_rates/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+
+{% block head  %}
+
+  <!-- meta description -->
+  {% if language_code == 'ar' %}
+    <meta name="description" content="{{ meta_details.gold_ar }}">
+  {% elif language_code == 'en' %}
+    <meta name="description" content="{{ meta_details.gold }}">
+  {% endif %}
+  <!-- end meta description -->
+
+
+  <style>
+    #content {
+    font-size: 14px; /* You can adjust the size as needed */
+    }
+    #content h1,
+    #content td,
+    #content th,
+    #content strong,
+    #content span {
+        font-size: 15px; /* You can adjust the size as needed */
+    }
+    #header-gold-page {
+      font-size: 20px !important;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+
+
+  <div class="content" id="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="section-title-cont">
+            <h1 id="header-gold-page"> {% trans 'أسعار الذهب في مصر' %} </h1>
+          </div>
+          <table class="table table-hover local-cur">
+            <thead>
+              <tr>
+                <th></th>
+                <td></td>
+                <td>{% trans 'شراء' %}</td>
+                <td>{% trans 'مبيع' %} </td>
+                <td>{% trans 'الفرق' %} </td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for gold in golds %}
+                {% if gold.karat.name == "Gold Ounce"%}
+                  <tr>
+                    <th>
+                      <img src="data:image/png;base64,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" class="cur-flag" />
+                      {% if language_code == 'ar' %}
+                        <span>أونصة الذهب</span>
+                      {% elif language_code == 'en' %}
+                        <span> Gold Ounce </span>
+                      {% endif %} 
+
+                      
+                    </th>
+                    <td></td>
+                    <td>
+                      <strong>2019.78</strong>
+                    </td>
+                    <td>
+                      {% if language_code == 'ar' %}
+                        <strong>دولار أمريكي</strong>
+                      {% elif language_code == 'en' %}
+                        <strong> US Dollar </strong>
+                      {% endif %} 
+                      
+                    </td>
+                    <td class="change-td">
+                      <svg class="arrow up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                        <path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-width="2" d="m1 6 5-4 5 4"></path>
+                      </svg>
+                    </td>
+                  </tr> 
+
+                {% else %}
+                  <tr>
+                    <th>
+                      <a href="{% url 'gold_details' gold.karat.name  %}"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAASCAYAAAA6yNxSAAAGfUlEQVRIiZ2WeUzUdxrGf39t0m7SdDdp/9ikW1erbVcRQcXgUKOCVywodUXqhYIHCKIIba3sqrVaba1tccUZQLEqNB0VFrlGQAiHwzXHb06GYUaRS5A5uOb4zfnsy+zWNL3SdpInv5nJJJ/n+77P+36H6bp3iPk90tUcZrTVBxn2ThKjKN334qPWkx9MDFzpsw3xJ826T8XD7Me3+tqyPzY2ZiXpao+s1IgyXlVVpP5B8vVqpiM3iJHlLWKkpN8F1lSlMfLbuxnl3ZRX+mVnz9lGrlvhLwe8RYCdTxIANtLYl8DwcXj0e2GTx8OqOTYyrLnUoihet6U95/XfaIDA6ooDjPxOIp08PWhIeYHvtBR7fM5SOMeF4J7kAKaPgKfHgRHSwFGgdz9g3AoMvg+M34B/6hZ8Jj4eV8dyrV9OG1j46wyoypMZtiSJ0dVmRgwpz99ymL+BZ+o27BYhJnvPwmb4AK7+LHgGsjHecxr27nTAsCVgwjchhGeyGq4nl2BXJsDauAa9FdGQ5IVFSvgLfs7A4cBTWbYvUOqu2sz1w5qcGvdUOZxjxbA+LgiAJ/VZcI+chP3RvzBmOIMx2XbYZBvhNJAB2234nQ3wmgrg0iXBKV2LibaNeHJ/M7R3NkNS8JZQyg9iflTmrnvpFKpEAicw+oajWy29he0uSzHGB/iwjxTCrDuJCWM2ODqtzXgUJs0JmGV7MNkWDq9hBzCRB7jK4LcI6PM+uBVvg1Nuogy8C1NTHIzlsej8OhateavcMsGC558Fq0tE4JIESvWu54zNJ9OtfUI93A0ARBSqK3ANnALXlw3/YBYFKwVefTwc8lVwtIfAZ6A+T1IGuBLAfB7+njj4lCvgVseC0+yAQ7EVFnEc9f4dKIpj8CAvGo2CaHQKwhICBrTVaYy6KuOPj9ovHJ948p9h+FoJ3AJM3aRAnSXgMXq+BwylUbAIpokAVMH0fjP9RvA/sOkcoFsFPzsfXtU0fAM41SY4FVsw1haP/pp/QC3cgNaCt9HEX486/rSR5ZpAydnSPcwge+4BICewniQB3GTAXglYaKz6M+nrjYByIcDOpoDFUKrzAefd/4MjAdlM+BXBBF8GtzIKLsVaONn1GBPHEDwW2tsb0X41Bo2561B3eT2abmyDpCiGYzTVVAFRxpxJ9V44uxNhN2TAOXQaLvNlSm8xfI5S+O2ldNIbBDsPWMvIHEul/hToWkGeZwEE9imXwsMugVs+LR4ckuWwNEeiryoKGuFqtOVHof7iKtTnb0JrURzYorXX2YLFMxlFRSbzuCntK7fuXdhUJHU8bJo42HVxcD7cRmFLhtucDa/zC/ggROBloaXT+RKB58Gv5hE8HB4CuyRhcHaEYkociqd1YXhYFg5VUThaLoWh/t/L0VIYDenNdXWKwiU8We7fmcAYKiuzGIt097hXvxl27XY4unfRGO0B15tMs50Kz+BBeIbT4bUehI87CD/K4TOfg6/jbwGwW7YEnGQx7O2LMNYcipGaYPSVz4NeOBfSgjfQdDGIer4MHdei1Ow1XqxcMI+R8ucHtmBgEfXcPxTr0sXD1b2NWrATXPcOcPrtcBl3wNWbAPdAErwjB+CzHobfQRsNOfB7hRgX82ipvAlrcwhGGxZgUBQMQ0kQNEXT4FlouTgDTZeC0FbAM8mvLUuX54cw0svzA9DvizF17pRCHwVOsYZCE0mpXQGnaiW4rtVwUdjcfXFkYBcZSKUsTBs4QarCSGcier59Gca7QdDdmgv2+lyIc2ej7rMZqP38TTTnhnmkVyPOUJ9fkPKDCRb6I3jAgLVtHSV7Fvyy16inc6inlGQtBYpMeYzR8PbTTA/vhN+aAjhoB7g/JAO0kHpOoTPvLxAL3kBDzmxUnP4rSj+ag9oLi9CeH3GNvRo+gxYNIxX8NPiZAZ0oNfjR/V2Zg43x10fFG6QTkjV2ThVJy2Qljd9qYDSabrV4moI9NJaH4J2g9Tv5T9ie5lJfw1B56s8oOTEL5Z+EoCWXd48t5C1l8wkqCPlF8DMDGtERRll1lGErjzGKyg8ZVdV7f9LdS+c9rN+fPCBOzDXJE5qn9Alm1xBlYXQfPKYUuEaT4bXlQCtKRPWZV/DgcjgrvxoRo7yy8FeDnxn44UWkpYtIU30kMB3s3fcZtiyLUZZnPKcVpYf21Kdt721J/Wyg40DNU3WG2VCbONjBX5yiuLKI/mAs+E3g7/RfqXX4XzaRi9YAAAAASUVORK5CYII=" class="cur-flag" />
+                        {% if language_code == 'ar' %}
+                          <span> غرام ذهب  {{ gold.karat.name_ar}}</span>
+                        {% elif language_code == 'en' %}
+                        <span> {{ gold.karat.name }} Gold Gram </span>
+                        {% endif %} 
+                        
+                    </th>
+                    <td></td>
+                    <td>
+                      <strong>{{ gold.buy_price }}</strong>
+                    </td>
+                    <td>
+                      <strong>{{ gold.sell_price }}</strong>
+                    </td>
+                    <td class="change-td">
+                      <span class="change-percentage" style="color:#e6504d">0.81%</span>
+                      <svg class="arrow down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                        <path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-width="2" d="m1 6 5-4 5 4"></path>
+                      </svg>
+                    </td>
+                  </tr>
+                
+                {% endif %}
+
+
+
+              {% endfor %}
+
+<!--               
+              <tr>
+                <th>
+                  <a href="gold/karat18.html"><img src="data:image/png;base64,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" class="cur-flag" />
+                    <span>غرام ذهب عيار 18</span>
+                </th>
+                <td></td>
+                <td>
+                  <strong>2,463.63</strong>
+                </td>
+                <td>
+                  <strong>2,463.63</strong>
+                </td>
+                <td class="change-td">
+                  <span class="change-percentage" style="color:#e6504d">0.81%</span>
+                  <svg class="arrow down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                    <path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-width="2" d="m1 6 5-4 5 4"></path>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <a href="gold/karat21.html"><img src="data:image/png;base64,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" class="cur-flag" />
+                    <span>غرام ذهب عيار 21</span>
+                </th>
+                <td></td>
+                <td>
+                  <strong>2,898.38</strong>
+                </td>
+                <td>
+                  <strong>2,898.38</strong>
+                </td>
+                <td class="change-td">
+                  <span class="change-percentage" style="color:#e6504d">0.81%</span>
+                  <svg class="arrow down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                    <path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-width="2" d="m1 6 5-4 5 4"></path>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <a href="gold/karat24.html"><img src="data:image/png;base64,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" class="cur-flag" />
+                    <span>غرام ذهب عيار 24</span>
+                </th>
+                <td></td>
+                <td>
+                  <strong>3,364.20</strong>
+                </td>
+                <td>
+                  <strong>3,364.20</strong>
+                </td>
+                <td class="change-td">
+                  <span class="change-percentage" style="color:#e6504d">0.81%</span>
+                  <svg class="arrow down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                    <path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-width="2" d="m1 6 5-4 5 4"></path>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <img src="data:image/png;base64,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" class="cur-flag" />
+                  <span>أونصة الذهب</span>
+                </th>
+                <td></td>
+                <td>
+                  <strong>2019.78</strong>
+                </td>
+                <td>
+                  <strong>دولار أمريكي</strong>
+                </td>
+                <td class="change-td">
+                  <svg class="arrow up" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 8">
+                    <path fill="none" stroke="currentcolor" stroke-linecap="round" stroke-width="2" d="m1 6 5-4 5 4"></path>
+                  </svg>
+                </td>
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-4">
+          <div class="widget-content">
+            <div class="widget-title">
+              <h3>أخبار متعلقة</h3>
+            </div>
+            <ul class="last-news">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}
+
+
+
+
+

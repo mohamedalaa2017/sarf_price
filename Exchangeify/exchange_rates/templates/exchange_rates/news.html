@@ -1,0 +1,266 @@
+{% extends 'exchange_rates/layout.html' %}
+{% load i18n %} 
+{% load static %} 
+
+<!-- meta description -->
+{% block head %}
+  <meta name="description" content="{{ meta_details.news_ar }}">
+{% endblock %}
+<!-- end meta description -->
+
+
+
+
+{% block body %}
+
+  <link rel="stylesheet" href="{% static 'exchange_rates/css/articles.css' %}" />
+  <script src="{% static 'exchange_rates/articles.css' %}"></script>
+
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+
+
+        <div class="post col-md-12">
+          <div class="card-img">
+            <div class="card-img-overlay">
+              <a class="last-post-title" href="1124.html">
+                <h2></h2>
+                <span></span>
+              </a>
+            </div>
+            <img
+              width="1280"
+              height="853"
+              src="wp-content/uploads/2023/12/54ffad1b-10ff-4ee7-8eba-1c5eefe70a50-Large.jpg"
+              class="attachment-post-thumbnail size-post-thumbnail wp-post-image"
+              alt
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <div class="card-desc">
+            <p></p>
+            <a class="last-post-readmore" href="1124.html">اقرأ المزيد</a>
+          </div>
+        </div>
+
+        <div class="posts-list" id="ajax-posts">
+          <div class="post col-md-6">
+            <div class="card-img">
+              <div class="card-img-overlay">
+                <a class="last-post-title" href="1122.html">
+                  <h2></h2>
+                  <span></span>
+                </a>
+              </div>
+              <img
+                width="1000"
+                height="667"
+                src="wp-content/uploads/2023/12/FF09CF8B-0FF8-4D4F-B4D8-19EAEE243DB9.jpg"
+                class="attachment-post-thumbnail size-post-thumbnail wp-post-image"
+                alt
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
+            <div class="card-desc">
+              <p></p>
+              <a class="last-post-readmore" href="1122.html">اقرأ المزيد</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div id="more_posts">قراءة المزيد</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div> -->
+
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+
+
+        <div class="post col-md-12">
+          <!-- <div class="card-img">
+          </div> -->
+        </div>
+
+        <div class="posts-list" id="ajax-posts">
+          <!-- <div class="post col-md-6">
+
+          </div> -->
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div id="more_posts">قراءة المزيد</div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let limit = 5;
+        let offset = 0;
+        let isLoading = false;
+        let isFirstDivUpdated = false;
+
+        const postContainer = document.getElementById("ajax-posts");
+        const morePostsButton = document.getElementById("more_posts");
+        const firstPostContainer = document.querySelector(".post.col-md-12");
+
+        // Hide the "قراءة المزيد" button initially
+        morePostsButton.style.visibility = "hidden";
+
+        function loadPosts() {
+          isLoading = true;
+
+          fetch(`${window.location.origin}/api/posts/?limit=${limit}&offset=${offset}`)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data && data.length > 0) {
+                if (!isFirstDivUpdated) {
+                  // Update the first post container
+                  updatePostContainer(firstPostContainer, data[0]);
+                  isFirstDivUpdated = true;
+                } else {
+                  // Add the first data to the second div
+                  createPostElement(data[0]);
+                }
+
+                // Update the posts list container
+                for (let i = 1; i < data.length; i++) {
+                  createPostElement(data[i]);
+                }
+
+                // Increase the offset for the next request
+                offset += limit;
+              }
+
+              isLoading = false;
+
+              // Show the "قراءة المزيد" button if there might be more posts
+              morePostsButton.style.visibility = data.length >= limit ? "visible" : "hidden";
+
+            })
+            .catch((error) => {
+              console.error("Error fetching posts:", error);
+              isLoading = false;
+            });
+        }
+
+        function updatePostContainer(container, postData) {
+          const tempElement = document.createElement('div');
+          tempElement.innerHTML = postData.content;
+          const textContent = tempElement.textContent || tempElement.innerText;
+
+          let date = formatPostDate(postData.created_at);
+          let postUrl = `/news/${postData.id}`;
+          // Update the HTML content of the first post container
+          container.innerHTML = `
+            <div class="card-img">
+              <div class="card-img-overlay">
+                <a class="last-post-title" href="${postUrl}">
+                  <h2>${postData.title}</h2>
+                  <span>${date}</span>
+                </a>
+              </div>
+              <img
+                width="1280"
+                height="853"
+                src="${postData.image}"
+                class="attachment-post-thumbnail size-post-thumbnail wp-post-image"
+                alt="${postData.alt}"
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
+            <div class="card-desc">
+              <p>${textContent}</p>
+              <a class="last-post-readmore" href="${postUrl}">اقرأ المزيد</a>
+            </div>
+          `;
+        }
+
+        function createPostElement(postData) {
+          // const truncatedContent = postData.content.substring(0, 30);
+          const tempElement = document.createElement('div');
+          tempElement.innerHTML = postData.content;
+          const textContent = tempElement.textContent || tempElement.innerText;
+
+          // Truncate the content to the first 30 characters
+          const truncatedContent = (textContent.substring(0, 30) + '...');
+          let date = formatPostDate(postData.created_at);
+
+          let postUrl = `/news/${postData.id}`;
+
+          // Create a new post element for the posts list
+          const postElement = document.createElement("div");
+          postElement.className = "post col-md-6";
+          postElement.innerHTML = `
+            <div class="card-img">
+              <div class="card-img-overlay">
+                <a class="last-post-title" href="${postUrl}">
+                  <h2>${postData.title}</h2>
+                  <span>${date}</span>
+                </a>
+              </div>
+              <img
+                width="1000"
+                height="667"
+                src="${postData.image}"
+                class="attachment-post-thumbnail size-post-thumbnail wp-post-image"
+                alt="${postData.alt}"
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
+            <div class="card-desc">
+              <p>${truncatedContent}</p>
+              <a class="last-post-readmore" href="${postData.link}">اقرأ المزيد</a>
+            </div>
+          `;
+
+          // Append the new post element to the posts list container
+          postContainer.appendChild(postElement);
+        }
+
+        function formatPostDate(dateString) {
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          const formattedDate = new Date(dateString).toLocaleDateString('ar-EG', options);
+          return formattedDate;
+        }
+
+        morePostsButton.addEventListener("click", function () {
+          if (!isLoading) {
+            loadPosts();
+          }
+        });
+
+        // Initial load of posts
+        loadPosts();
+      });
+
+  </script>
+  
+  
+{% endblock %}

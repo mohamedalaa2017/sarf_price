@@ -1,0 +1,1299 @@
+
+{% extends 'exchange_rates/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+
+{% block head %}
+	<style>
+		#chart-buttons {
+			margin: auto;
+			margin-top: 30px;
+
+		}
+
+		#chart-buttons button {
+			margin: 0 1px;
+			color: #37558dd6;
+			background-color: #fff;
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+
+		#chart-buttons button:hover {
+			color: #37558d;
+		}
+
+		#chart-buttons button.active {
+			color: gb(65 114 165);
+			background-color: #d9e6ff;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="container cur-container">
+      <div class="row">
+
+        {% if language_code == 'ar' %}
+          <div
+            class="breadcrumbs"
+            typeof="BreadcrumbList"
+            vocab="https://schema.org/"
+          >
+            <span property="itemListElement" typeof="ListItem">
+              <a
+                property="item"
+                typeof="WebPage"
+                title="اذهب الي سعر الصرف"
+                href="{% url 'index' %}"
+                class="home"
+              >
+                <span property="name">سعر الصرف </span>
+              </a>
+              <meta property="position" content="1" />
+            </span>
+            »
+            <span property="itemListElement" typeof="ListItem">
+              <a
+                property="item"
+                typeof="WebPage"
+                title="اذهب إلى صفحة جميع العملات "
+                href="{% url 'currencies' %}"
+                class="taxonomy category"
+              >
+                <span property="name">العملات </span>
+              </a>
+              <meta property="position" content="2" />
+            </span>
+            »
+            <span property="itemListElement" typeof="ListItem">
+              <a
+                property="item"
+                typeof="WebPage"
+                title="اذهب إلى صفحة جميع العملات "
+                href="{% url 'currencies_currency' currency.currency.name %}"
+                class="taxonomy category"
+              >
+                <span property="name"> {{ currency.currency.name_ar }} </span>
+              </a>
+              <meta property="position" content="3" />
+            </span>
+            »
+            <span class="post post-post current-item">
+              سعر {{ currency.currency.name_ar }} في مصر
+            </span>
+          </div>
+
+        {% elif language_code == 'en' %}
+
+          <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+            <span property="itemListElement" typeof="ListItem">
+              <a
+                property="item"
+                typeof="WebPage"
+                title="Go to Sarf Price"
+                href="{% url 'index' %}"
+                class="home"
+              >
+                <span property="name">Sarf Price </span>
+              </a>
+              <meta property="position" content="1" />
+            </span>
+            »
+            <span property="itemListElement" typeof="ListItem">
+              <a
+                property="item"
+                typeof="WebPage"
+                title="go to all currencies page "
+                href="{% url 'currencies' %}"
+                class="taxonomy category"
+              >
+                <span property="name">Currencies </span>
+              </a>
+              <meta property="position" content="2" />
+            </span>
+            »
+            <span property="itemListElement" typeof="ListItem">
+              <a
+                property="item"
+                typeof="WebPage"
+                title="go to all currencies page "
+                href="{% url 'currencies_currency' currency.currency.name %}"
+                class="taxonomy category"
+              >
+                <span property="name"> {{ currency.currency.name }}</span>
+              </a>
+              <meta property="position" content="3" />
+            </span>
+            »
+            <span class="post post-post current-item">
+              {{ currency.currency.name }} exchange rates in Egypt
+            </span>
+          </div>
+
+
+        {% endif %}
+
+
+
+
+
+
+        <div class="col-md-8 cur-info-container">
+
+
+
+
+          {% if language_code == 'ar' %}
+            <div class="cur-header">
+              <div>
+
+                <h1>{{ currency.currency.name_ar }} / جنيه مصري </h1>
+                {% if type == "market" %}
+                  <h2>سعر {{ currency.currency.name_ar }} اليوم في السوق السوداء في مصر</h2>
+                {% else %}
+                  <h2>سعر {{ currency.currency.name_ar }} اليوم في البنك في مصر</h2>
+                {% endif %}
+
+              </div>
+            </div>
+            <div class="cur-data">
+              <div class="row-data">
+                <div class="cur-col">
+                  <span class="label">شراء </span>
+
+                  {% if type == "market" %}
+                    <span class="value"> {{ currency.buy_market_price }}</span>
+                  {% else %}
+                    <span class="value"> {{ currency.buy_bank_price }}</span>
+                  {% endif %}
+                </div>
+                <div class="cur-col">
+                  <span class="label">مبيع </span>
+                  {% if type == "market" %}
+                    <span class="value"> {{ currency.sell_market_price }} </span>
+                  {% else %}
+                    <span class="value"> {{ currency.sell_bank_price }} </span>
+                  {% endif %}
+                </div>
+                <div class="cur-col">
+                  <span>
+                    <svg
+                      class="arrow up"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 12 8"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentcolor"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="m1 6 5-4 5 4"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="up">0.00% (0)</span>
+                </div>
+              </div>
+              <div class="row-data cur-extra-data">
+                <div class="cur-col">
+                  <span class="label">الإغلاق السابق </span>
+                  {% if type == "market" %}
+                      <span class="value"> {{ currency.market_prev_close }} </span>
+                  {% else %}
+                      <span class="value"> {{ currency.bank_prev_close }} </span>
+                  {% endif %}
+                </div>
+                <div class="cur-col">
+                  <span class="label">المدى اليومي </span>
+                  {% if type == "market" %}
+                    <span class="value"> {{ currency.market_day_range }} </span>
+                  {% else %}
+                    <span class="value"> {{ currency.bank_day_range }} </span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div id="chart-buttons">
+              <!-- <button class="active" onclick="fetchChart_Data('today')" id="today">
+                اليوم
+              </button> -->
+              <button onclick="fetchChart_Data('week')" id="week">أسبوع</button>
+              <button onclick="fetchChart_Data('month')" id="month">شهر</button>
+              <button onclick="fetchChart_Data('threeMonths')" id="threeMonths">
+                3 أشهر
+              </button>
+              <button onclick="fetchChart_Data('sixMonths')" id="sixMonths">
+                6 أشهر
+              </button>
+              <button onclick="fetchChart_Data('year')" id="year">سنة</button>
+              <button onclick="fetchChart_Data('all')" id="all">الكل</button>
+            </div>
+
+            <div id="chartContainer" class="chart"></div>
+
+          {% elif language_code == 'en' %}
+            <div class="cur-header">
+              <div>
+                <div>
+                  <h1> {{ currency.currency.name }} / Egyptian Pound</h1>
+                  {% if type == "market" %}
+                  <h2> price of {{ currency.currency.name }} in market </h2>
+                  {% else %}
+                    <h2> price of {{ currency.currency.name }} in bank </h2>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+
+            <div class="cur-data">
+              <div class="row-data">
+                <div class="cur-col">
+                  <span class="label">Buy </span>
+                  {% if type == "market" %}
+                    <span class="value"> {{ currency.buy_market_price }}</span>
+                  {% else %}
+                    <span class="value"> {{ currency.buy_bank_price }}</span>
+                  {% endif %}
+                  
+                </div>
+                <div class="cur-col">
+                  <span class="label">Sell </span>
+                  {% if type == "market" %}
+                    <span class="value"> {{ currency.sell_market_price }} </span>
+                  {% else %}
+                    <span class="value"> {{ currency.sell_bank_price }} </span>
+                  {% endif %}
+                  
+                </div>
+                <div class="cur-col">
+                  <span>
+                    <svg
+                      class="arrow up"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 12 8"
+                    >
+                      <path
+                        fill="none"
+                        stroke="currentcolor"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="m1 6 5-4 5 4"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="up">0.00% (0)</span>
+                </div>
+              </div>
+              <div class="row-data cur-extra-data">
+                <div class="cur-col">
+                  <span class="label">PREV CLOSE </span>
+                  {% if type == "market" %}
+                      <span class="value"> {{ currency.market_prev_close }} </span>
+                  {% else %}
+                      <span class="value"> {{ currency.bank_prev_close }} </span>
+                  {% endif %}
+                  
+                </div>
+                <div class="cur-col">
+                  <span class="label">DAY'S RANGE </span>
+                  {% if type == "market" %}
+                    <span class="value"> {{ currency.market_day_range }} </span>
+                  {% else %}
+                    <span class="value"> {{ currency.bank_day_range }} </span>
+                  {% endif %}
+                  
+                </div>
+              </div>
+            </div>
+
+            <div id="chart-buttons">
+              <!-- <button class="active" onclick="fetchChart_Data('today')" id="today">
+                Today -->
+              </button>
+              <button onclick="fetchChart_Data('week')" id="week">Week</button>
+              <button onclick="fetchChart_Data('month')" id="month">Month</button>
+              <button onclick="fetchChart_Data('threeMonths')" id="threeMonths">
+                3 Months
+              </button>
+              <button onclick="fetchChart_Data('sixMonths')" id="sixMonths">6 Months</button>
+              <button onclick="fetchChart_Data('year')" id="year">Year</button>
+              <button onclick="fetchChart_Data('all')" id="all">All</button>
+            </div>
+
+            <div id="chartContainer" class="chart"></div>
+          {% endif %}
+
+
+
+
+
+
+		  <!-- currency exchange  -->
+          <!-- <div class="cur-convert-data" style="float: right">
+            <h3>الدولار الأمريكي مقابل الجنيه المصري في السوق الموازية</h3>
+            <table class="table table-hover local-cur">
+              <thead>
+                <tr>
+                  <td>دولار أمريكي</td>
+                  <td>جنيه مصري</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1 دولار أمريكي </strong></td>
+                  <td><strong>50 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>5 دولار أمريكي </strong></td>
+                  <td><strong>251 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>10 دولار أمريكي </strong></td>
+                  <td><strong>503 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>25 دولار أمريكي </strong></td>
+                  <td><strong>1,256 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>50 دولار أمريكي </strong></td>
+                  <td><strong>2,513 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>100 دولار أمريكي </strong></td>
+                  <td><strong>5,025 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>500 دولار أمريكي </strong></td>
+                  <td><strong>25,125 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>1000 دولار أمريكي </strong></td>
+                  <td><strong>50,250 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>5000 دولار أمريكي </strong></td>
+                  <td><strong>251,250 جنيه مصري </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>10000 دولار أمريكي </strong></td>
+                  <td><strong>502,500 جنيه مصري </strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+
+
+		  <div class="cur-convert-data" style="float: right">
+            <!-- <h3>الدولار إلى جنيه مصري</h3> -->
+            {% if language_code == 'ar' %}
+				{% if type == "market"%}
+					<h3>{{  currency.currency.name_ar }} مقابل  {% trans "الجنيه مصري في  السوق الموازية" %} </h3>
+				{% elif type == "bank"%}
+					<h3>{{  currency.currency.name_ar }} مقابل  {% trans "الجنيه مصري في البنك المركزي" %} </h3>
+				{% endif %}
+
+            {% elif language_code == 'en' %}
+				{% if type == "market"%}
+					<h3>{{  currency.currency.name}} To  {% trans "الجنيه مصري في  السوق الموازية" %} </h3>
+				{% elif type == "bank"%}
+					<h3>{{  currency.currency.name }} To  {% trans "الجنيه مصري في البنك المركزي" %} </h3>
+				{% endif %}
+
+            {% endif %}
+            <table class="table table-hover local-cur">
+              <thead>
+                <tr>
+                {% if language_code == 'ar' %}
+                <td>{{ currency.currency.name_ar }}</td>
+                {% elif language_code == 'en' %}
+                <td>{{ currency.currency.name }}</td>
+                {% endif %}
+      
+                  
+                  <td> {% trans "جنيه مصري" %} </td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for key, value in currency_exchange.items %}
+                <tr>
+                  {% if language_code == 'ar' %}
+                  <td><strong>{{ key }} {{ currency.currency.name_ar }}</strong></td>
+                  {% elif language_code == 'en' %}
+                  <td><strong>{{ key }} {{ currency.currency.name }}</strong></td>
+                  {% endif %}
+                  <td><strong>{{ value}} {% trans "جنيه مصري" %}</strong></td>
+                </tr>
+                
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+		  
+
+
+
+
+          <div class="cur-change-data">
+            <h3>
+              التغير بسعر الدولار الأمريكي مقابل الجنيه المصري في السوق الموازية
+            </h3>
+            <table>
+              <thead>
+                <tr>
+                  <td>أسبوعي</td>
+                  <td>شهري</td>
+                  <td>سنوي</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="down">0% (0)</span>
+                  </td>
+                  <td>
+                    <span class="down">0% (0)</span>
+                  </td>
+                  <td>
+                    <span class="down">NA% (0)</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+
+
+
+        </div>
+
+
+        {% if language_code == 'ar' %}
+            <!-- currency converter arabic  -->
+            <div class="col-md-4" style="margin-top: 20px">
+              <div class="panel panel-default converter">
+                <div class="panel-heading">محول العملات</div>
+                <div class="panel-heading sell_buy">
+                  <div class="sell-input">
+                    <label for="sell_radio">
+                      <input
+                        id="sell_radio"
+                        value="sell"
+                        name="sell_buy_radio"
+                        type="radio"
+                      />
+                      شراء
+                    </label>
+                  </div>
+                  <div class="buy-input">
+                    <label for="buy_radio">
+                      <input
+                        id="buy_radio"
+                        value="buy"
+                        name="sell_buy_radio"
+                        checked="checked"
+                        type="radio"
+                      />
+                      مبيع
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <input
+                    type="number"
+                    id="f_amount"
+                    class="result1 form-control"
+                    autocomplete="off"
+                    placeholder="المبلغ هنا ..."
+                  />
+                  <select
+                    name="cur2"
+                    id="from"
+                    class="form-control cur-change"
+                    tabindex="1"
+                  >
+                    <option value="USD">دولار أمريكي</option>
+                    <option value="EUR">يورو</option>
+                    <option value="TRY">ليرة تركية</option>
+                    <option value="SAR">ريال سعودي</option>
+                    <option value="AED">درهم إماراتي</option>
+                    <option value="LYD">دينار ليبي</option>
+                    <option value="JOD">دينار أردني</option>
+                    <option value="KWD">دينار كويتي</option>
+                    <option value="GBP">جنيه استرليني</option>
+                    <option value="QAR">ريال قطري</option>
+                    <option value="OMR">ريال عماني</option>
+                    <option value="BHD">دينار بحريني</option>
+                    <option value="CAD">دولار كندي</option>
+                    <option value="SEK">كرون سويدي</option>
+                    <option value="NOK">كرون نرويجي</option>
+                    <option value="DKK">كرون دينماركي</option>
+                    <option value="SYP">ليرة سورية</option>
+                    <option value="DZD">دينار جزائري</option>
+                    <option value="MAD">درهم مغربي</option>
+                    <option value="TND">دينار تونسي</option>
+                    <option value="RUB">روبل روسي</option>
+                    <option value="MYR">رينغيت ماليزي</option>
+                    <option value="BRL">ريال برازيلي</option>
+                    <option value="NZD">دولار نيوزيلاندي</option>
+                    <option value="CHF">فرنك سويسري</option>
+                    <option value="AUD">دولار أسترالي</option>
+                    <option value="ZAR">راند جنوب أفريقي</option>
+                    <option value="IQD">دينار عراقي</option>
+                    <option value="IRR">ريال إيراني</option>
+                    <option value="SGD">دولار سينغافوري</option>
+                    <option value="EGP">جنيه مصري</option>
+                  </select>
+                  <input
+                    type="number"
+                    class="result2 resultval2 form-control"
+                    id="t_amount"
+                    placeholder="المبلغ هنا  ..."
+                  />
+                  <select
+                    name="cur2"
+                    id="to"
+                    class="form-control cur-change"
+                    tabindex="1"
+                  >
+                    <option selected value="EGP">جنيه مصري</option>
+                    <option value="USD">دولار أمريكي</option>
+                    <option value="EUR">يورو</option>
+                    <option value="TRY">ليرة تركية</option>
+                    <option value="SAR">ريال سعودي</option>
+                    <option value="AED">درهم إماراتي</option>
+                    <option value="LYD">دينار ليبي</option>
+                    <option value="JOD">دينار أردني</option>
+                    <option value="KWD">دينار كويتي</option>
+                    <option value="GBP">جنيه استرليني</option>
+                    <option value="QAR">ريال قطري</option>
+                    <option value="OMR">ريال عماني</option>
+                    <option value="BHD">دينار بحريني</option>
+                    <option value="CAD">دولار كندي</option>
+                    <option value="SEK">كرون سويدي</option>
+                    <option value="NOK">كرون نرويجي</option>
+                    <option value="DKK">كرون دينماركي</option>
+                    <option value="SYP">ليرة سورية</option>
+                    <option value="DZD">دينار جزائري</option>
+                    <option value="MAD">درهم مغربي</option>
+                    <option value="TND">دينار تونسي</option>
+                    <option value="RUB">روبل روسي</option>
+                    <option value="MYR">رينغيت ماليزي</option>
+                    <option value="BRL">ريال برازيلي</option>
+                    <option value="NZD">دولار نيوزيلاندي</option>
+                    <option value="CHF">فرنك سويسري</option>
+                    <option value="AUD">دولار أسترالي</option>
+                    <option value="ZAR">راند جنوب أفريقي</option>
+                    <option value="IQD">دينار عراقي</option>
+                    <option value="IRR">ريال إيراني</option>
+                    <option value="SGD">دولار سينغافوري</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+        {% elif language_code == 'en' %}
+            <!-- currency converter english  -->
+            <div class="col-md-4" style="margin-top: 20px">
+              <div class="panel panel-default converter">
+                <div class="panel-heading">Currency Converter</div>
+                <div class="panel-heading sell_buy">
+                  <div class="sell-input">
+                    <label for="sell_radio">
+                      <input
+                        id="sell_radio"
+                        value="sell"
+                        name="sell_buy_radio"
+                        type="radio"
+                      />
+                      Buy
+                    </label>
+                  </div>
+                  <div class="buy-input">
+                    <label for="buy_radio">
+                      <input
+                        id="buy_radio"
+                        value="buy"
+                        name="sell_buy_radio"
+                        checked="checked"
+                        type="radio"
+                      />
+                      Sell
+                    </label>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <input
+                    type="number"
+                    id="f_amount"
+                    class="result1 form-control"
+                    autocomplete="off"
+                    placeholder="Amount here ..."
+                  />
+                  <select
+                    name="cur2"
+                    id="from"
+                    class="form-control cur-change"
+                    tabindex="1"
+                  >
+                    <option value="USD">US Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="TRY">Turkish Lira</option>
+                    <option value="SAR">Saudi Riyal</option>
+                    <option value="AED">Emirate Dirham</option>
+                    <option value="LYD">Libyan Dinar</option>
+                    <option value="JOD">Jordanian Dinar</option>
+                    <option value="KWD">Kuwaiti Dinar</option>
+                    <option value="GBP">British Pound</option>
+                    <option value="QAR">Qatari Riyal</option>
+                    <option value="OMR">Omani Riyal</option>
+                    <option value="BHD">Bahraini Dinar</option>
+                    <option value="CAD">Canadian Dollar</option>
+                    <option value="SEK">Swedish Krona</option>
+                    <option value="NOK">Norwegian Krone</option>
+                    <option value="DKK">Danish Krone</option>
+                    <option value="SYP">Syrian Pound</option>
+                    <option value="DZD">Algerian Dinar</option>
+                    <option value="MAD">Moroccan Dirham</option>
+                    <option value="TND">Tunisian Dinar</option>
+                    <option value="RUB">Russian Ruble</option>
+                    <option value="MYR">Malaysian Ringgit</option>
+                    <option value="BRL">Brazilian Real</option>
+                    <option value="NZD">New Zealand Dollar</option>
+                    <option value="CHF">Swiss Franc</option>
+                    <option value="AUD">Australian Dollar</option>
+                    <option value="ZAR">South African Rand</option>
+                    <option value="IQD">Iraqi Dinar</option>
+                    <option value="IRR">Iranian Rial</option>
+                    <option value="SGD">Singapore Dollar</option>
+                    <option value="EGP">Egyptian Pound</option>
+                  </select>
+                  <input
+                    type="number"
+                    class="result2 resultval2 form-control"
+                    id="t_amount"
+                    placeholder="Amount here  ..."
+                  />
+                  <select name="cur2" id="to" class="form-control cur-change" tabindex="1">
+                    <option selected value="EGP">Egyptian Pound</option>
+                    <option value="USD">US Dollar</option>
+                    <option value="EUR">Euro</option>
+                    <option value="TRY">Turkish Lira</option>
+                    <option value="SAR">Saudi Riyal</option>
+                    <option value="AED">Emirate Dirham</option>
+                    <option value="LYD">Libyan Dinar</option>
+                    <option value="JOD">Jordanian Dinar</option>
+                    <option value="KWD">Kuwaiti Dinar</option>
+                    <option value="GBP">British Pound</option>
+                    <option value="QAR">Qatari Riyal</option>
+                    <option value="OMR">Omani Riyal</option>
+                    <option value="BHD">Bahraini Dinar</option>
+                    <option value="CAD">Canadian Dollar</option>
+                    <option value="SEK">Swedish Krona</option>
+                    <option value="NOK">Norwegian Krone</option>
+                    <option value="DKK">Danish Krone</option>
+                    <option value="SYP">Syrian Pound</option>
+                    <option value="DZD">Algerian Dinar</option>
+                    <option value="MAD">Moroccan Dirham</option>
+                    <option value="TND">Tunisian Dinar</option>
+                    <option value="RUB">Russian Ruble</option>
+                    <option value="MYR">Malaysian Ringgit</option>
+                    <option value="BRL">Brazilian Real</option>
+                    <option value="NZD">New Zealand Dollar</option>
+                    <option value="CHF">Swiss Franc</option>
+                    <option value="AUD">Australian Dollar</option>
+                    <option value="ZAR">South African Rand</option>
+                    <option value="IQD">Iraqi Dinar</option>
+                    <option value="IRR">Iranian Rial</option>
+                    <option value="SGD">Singapore Dollar</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+        {% endif %}
+
+
+
+
+
+
+      </div>
+    </div>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    
+    <script>
+      // var chart;
+      Highcharts.setOptions({
+        lang: {
+          noData: "لا توجد بيانات",
+          resetZoom: "إعادة تعيين",
+          thousandsSep: ".",
+          decimalPoint: ",",
+        },
+      });
+
+
+      // var chart = Highcharts.chart("chartContainer", {
+      //   turboThreshold: 10000,
+      //   chart: {
+      //     height: 300,
+      //     zoomType: "x",
+      //     resetZoomButton: {
+      //       theme: {
+      //         style: {
+      //           color: "#37558dd6",
+      //           marginRight: "100px",
+      //           margin: "20px",
+      //           padding: "200px",
+      //         },
+      //         fill: "#d9e6ff",
+      //         stroke: "white",
+      //         r: 5,
+
+      //         states: {
+      //           hover: {
+      //             fill: "rgb(162 189 241 / 84%)",
+      //             style: {
+      //               color: "#6a96cf",
+      //             },
+      //           },
+      //         },
+      //       },
+      //     },
+      //   },
+      //   rangeSelector: {
+      //     allButtonsEnabled: false,
+      //     enabled: false,
+      //     inputEnabled: false,
+      //     labelStyle: {
+      //       display: "none",
+      //     },
+      //     buttonTheme: {
+      //       // styles for the buttons
+      //       width: 60,
+      //       fill: "none",
+      //       stroke: "none",
+      //       "stroke-width": 0,
+      //       style: {
+      //         color: "#245ea9",
+      //         fontWeight: "bold",
+      //       },
+      //       states: {
+      //         hover: {
+      //           fill: "#245ea9",
+      //           style: {
+      //             color: "white",
+      //           },
+      //         },
+      //         select: {
+      //           fill: "#245ea9",
+      //           style: {
+      //             color: "white",
+      //           },
+      //         },
+      //       },
+      //     },
+      //     selected: 0,
+      //   },
+      //   xAxis: {
+      //     startOfWeek: 6,
+      //     scrollbar: {
+      //       enabled: false,
+      //     },
+      //     type: "datetime",
+      //   },
+      //   yAxis: {
+      //     title: {
+      //       text: "",
+      //     },
+      //   },
+      //   legend: {
+      //     enabled: false,
+      //   },
+      //   tooltip: {
+      //     formatter: function () {
+      //       var point = this.points[0];
+      //       return (
+      //         "<b>" +
+      //         point.series.name +
+      //         "</b><br/>" +
+      //         Highcharts.dateFormat("%A %B %e %Y", this.x) +
+      //         ":<br/>" +
+      //         "1 USD = " +
+      //         Highcharts.numberFormat(point.y, 2) +
+      //         " ل.ل" +
+      //         "<br/>" +
+      //         "أدنى سعر : " +
+      //         Highcharts.numberFormat(this.points[0].point.options.lowest, 2) +
+      //         " ل. ل" +
+      //         "<br/>" +
+      //         "أعلى سعر : " +
+      //         Highcharts.numberFormat(this.points[0].point.options.highest, 2) +
+      //         " ل. ل"
+      //       );
+      //     },
+      //     shared: true,
+      //   },
+      //   title: {
+      //     text: "",
+      //   },
+      //   navigator: {
+      //     enabled: false,
+      //   },
+      //   scrollbar: {
+      //     enabled: false,
+      //   },
+      //   labels: {
+      //     align: "right",
+      //   },
+      //   series: [
+      //     {
+      //       type: "area",
+      //       name: "",
+      //       data: [],
+      //       threshold: true,
+      //     },
+      //   ],
+      // });
+
+
+      var chart = Highcharts.chart("chartContainer", {
+        turboThreshold: 10000,
+        chart: {
+          height: 300,
+          zoomType: "x",
+          resetZoomButton: {
+            theme: {
+              style: {
+                color: "#37558dd6",
+                marginRight: "100px",
+                margin: "20px",
+                padding: "200px",
+              },
+              fill: "#d9e6ff",
+              stroke: "white",
+              r: 5,
+              states: {
+                hover: {
+                  fill: "rgb(162 189 241 / 84%)",
+                  style: {
+                    color: "#6a96cf",
+                  },
+                },
+              },
+            },
+          },
+        },
+        rangeSelector: {
+          allButtonsEnabled: false,
+          enabled: false,
+          inputEnabled: false,
+          labelStyle: {
+            display: "none",
+          },
+          buttonTheme: {
+            width: 60,
+            fill: "none",
+            stroke: "none",
+            "stroke-width": 0,
+            style: {
+              color: "#245ea9",
+              fontWeight: "bold",
+            },
+            states: {
+              hover: {
+                fill: "#245ea9",
+                style: {
+                  color: "white",
+                },
+              },
+              select: {
+                fill: "#245ea9",
+                style: {
+                  color: "white",
+                },
+              },
+            },
+          },
+          selected: 0,
+        },
+        xAxis: {
+          startOfWeek: 6,
+          scrollbar: {
+            enabled: false,
+          },
+          type: "datetime",
+        },
+        yAxis: {
+          title: {
+            text: "",
+          },
+        },
+        legend: {
+          enabled: false,
+        },
+        tooltip: {
+          backgroundColor: 'rgba(255, 255, 255, 0.85)',
+          borderColor: '#ccc',
+          borderWidth: 1,
+          borderRadius: 5,
+          shadow: true,
+          style: {
+            fontSize: '12px',
+            color: '#333',
+          },
+          formatter: function () {
+            var point = this.points[0];
+            return (
+              "<div style='width: 250px;'>" +
+              point.series.name +
+              "</b><br/>" +
+              Highcharts.dateFormat("%A %B %e %Y", this.x) +
+              ":<br/>" +
+              "1 {{ currency.currency.abbreviation}} = " +
+              Highcharts.numberFormat(point.y, 2) +
+              " ج.م" +
+              // "<br/>" +
+              // "أدنى سعر : " +
+              // Highcharts.numberFormat(this.points[0].point.options.lowest, 2) +
+              // " ل. ل" +
+              // "<br/>" +
+              // "أعلى سعر : " +
+              // Highcharts.numberFormat(this.points[0].point.options.highest, 2) +
+              // " ل. ل" +
+              // "</div>"+
+              "<br>"
+            );
+          },
+          shared: true,
+        },
+        title: {
+          text: "",
+        },
+        navigator: {
+          enabled: false,
+        },
+        scrollbar: {
+          enabled: false,
+        },
+        labels: {
+          align: "right",
+        },
+        series: [
+          {
+            type: "area",
+            name: "",
+            data: [],
+            threshold: true,
+          },
+        ],
+      });
+
+
+      function fetchChart_Data(period) {
+        chart.zoomOut(); // reset zoom
+        let buttons = document.getElementById("chart-buttons").children;
+        for (let i = 0; i < buttons.length; i++) {
+          let button = buttons[i];
+          button.classList.remove("active");
+        }
+
+        document.getElementById(period).classList.add("active");
+
+        let selectedValue = '{{ currency.currency.name }}';
+        let url = window.location.origin + `/api/currencies_charts/${selectedValue}/${period}`;
+        
+        chart.showLoading("جاري التحميل ..");
+        
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          
+          chart.hideLoading();
+
+          
+          let formattedData;
+
+          if (window.location.pathname.includes("bank")) {
+              formattedData = data.map(item => [
+              new Date(item.created_at).getTime(),  // Use getTime() to get timestamp in milliseconds
+              item.buy_bank_price,
+
+            ]);
+          } else if (window.location.pathname.includes("market")) {
+              formattedData = data.map(item => [
+              new Date(item.created_at).getTime(),  // Use getTime() to get timestamp in milliseconds
+              item.buy_market_price,
+
+            ]);
+          }
+
+
+
+          chart.xAxis[0].update({
+            type: "datetime", // Use datetime type for timestamp values
+            labels: {
+              formatter: function () {
+                return Highcharts.dateFormat('%Y-%m-%d', new Date(this.value));
+              }
+            }
+          });
+
+          chart.series[0].setData(formattedData, true);
+        })
+        .catch(error => {
+          console.error("Error fetching data:", error);
+        });
+
+    }
+
+
+      fetchChart_Data("week");
+    </script>
+
+
+    
+    <!-- <script>
+      // var chart;
+      Highcharts.setOptions({
+        lang: {
+          noData: "لا توجد بيانات",
+          resetZoom: "إعادة تعيين",
+          thousandsSep: ".",
+          decimalPoint: ",",
+        },
+      });
+
+      // Highcharts.getJSON("https://sarf-today.com/chart/market/USD/today", function(data) {
+      //     chartData = data;
+      // });
+
+      var chart = Highcharts.chart("chartContainer", {
+        turboThreshold: 10000,
+        chart: {
+          height: 300,
+          zoomType: "x",
+          resetZoomButton: {
+            theme: {
+              style: {
+                color: "#37558dd6",
+                marginRight: "100px",
+                margin: "20px",
+                padding: "200px",
+              },
+              fill: "#d9e6ff",
+              stroke: "white",
+              r: 5,
+
+              states: {
+                hover: {
+                  fill: "rgb(162 189 241 / 84%)",
+                  style: {
+                    color: "#6a96cf",
+                  },
+                },
+              },
+            },
+          },
+        },
+        rangeSelector: {
+          allButtonsEnabled: false,
+          enabled: false,
+          inputEnabled: false,
+          labelStyle: {
+            display: "none",
+          },
+          buttonTheme: {
+            // styles for the buttons
+            width: 60,
+            fill: "none",
+            stroke: "none",
+            "stroke-width": 0,
+            style: {
+              color: "#245ea9",
+              fontWeight: "bold",
+            },
+            states: {
+              hover: {
+                fill: "#245ea9",
+                style: {
+                  color: "white",
+                },
+              },
+              select: {
+                fill: "#245ea9",
+                style: {
+                  color: "white",
+                },
+              },
+            },
+          },
+          selected: 0,
+        },
+        xAxis: {
+          startOfWeek: 6,
+          scrollbar: {
+            enabled: false,
+          },
+          type: "datetime",
+        },
+        yAxis: {
+          title: {
+            text: "",
+          },
+        },
+        legend: {
+          enabled: false,
+        },
+        tooltip: {
+          formatter: function () {
+            var point = this.points[0];
+            return (
+              "<b>" +
+              point.series.name +
+              "</b><br/>" +
+              Highcharts.dateFormat("%A %B %e %Y", this.x) +
+              ":<br/>" +
+              "1 USD = " +
+              Highcharts.numberFormat(point.y, 2) +
+              " ل.ل" +
+              "<br/>" +
+              "أدنى سعر : " +
+              Highcharts.numberFormat(this.points[0].point.options.lowest, 2) +
+              " ل. ل" +
+              "<br/>" +
+              "أعلى سعر : " +
+              Highcharts.numberFormat(this.points[0].point.options.highest, 2) +
+              " ل. ل"
+            );
+          },
+          shared: true,
+        },
+        title: {
+          text: "",
+        },
+        navigator: {
+          enabled: false,
+        },
+        scrollbar: {
+          enabled: false,
+        },
+        labels: {
+          align: "right",
+        },
+        series: [
+          {
+            type: "area",
+            name: "",
+            data: [],
+            threshold: true,
+          },
+        ],
+      });
+
+      function fetchChart_Data(period) {
+        chart.zoomOut(); // reset zoom
+        let buttons = document.getElementById("chart-buttons").children;
+        for (let i = 0; i < buttons.length; i++) {
+          let button = buttons[i];
+          button.classList.remove("active");
+        }
+
+        document.getElementById(period).classList.add("active");
+
+        // return new Promise((resolve, reject) => {
+        //   let url = "https://sarf-today.com/chart/market/USD/" + period;
+
+        //   chart.showLoading("جاري التحميل ..");
+
+        //   $.getJSON(url, function (data) {
+        //     chart.series[0].setData(data);
+        //     chart.hideLoading();
+        //     return resolve(true);
+        //   });
+        // });
+
+        
+
+
+
+
+        let selectedValue = '{{ currency.currency.name }}';
+        let url = window.location.origin + `/api/currencies_charts/${selectedValue}/${period}`;
+
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            let transformedData = data.map(item => [
+              `Date.UTC(${new Date(item.created_at).getUTCFullYear()}, ${new Date(item.created_at).getUTCMonth()}, ${new Date(item.created_at).getUTCDate()}, ${new Date(item.created_at).getUTCHours()}, ${new Date(item.created_at).getUTCMinutes()})`,
+              item.buy_market_price,
+            ]);
+
+            // Log the entire array with Date.UTC function calls
+            console.log(transformedData);
+
+            // Replace the AJAX call with transformed data
+            chart.showLoading("جاري التحميل ..");
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                chart.series[0].setData(transformedData);
+                chart.hideLoading();
+                resolve(true);
+              }, 500); // Simulating a delay, adjust as needed
+            });
+          })
+          .catch(error => {
+            console.error("Error fetching data:", error);
+            return false;
+          });
+
+
+
+
+
+        // // Replace the AJAX call with static sample data
+        // const sampleData = [
+        //   // [Date.UTC(2023, 11, 20, 10, 30), 1.25],
+        //   // [Date.UTC(2023, 11, 20, 12, 0), 1.28],
+        //   // [Date.UTC(2023, 11, 20, 14, 45), 1.22],
+
+        //   [Date.UTC(2023, 11, 22, 5, 19), 52.48],
+        //   // [Date.UTC(2023, 11, 22, 5, 22), 55.45],
+        //   // [Date.UTC(2023, 11, 22, 5, 25), 57.41]
+
+          
+          
+        //   // Add more data points as needed
+        // ];
+
+        // chart.showLoading("جاري التحميل ..");
+
+        // // Simulate the loading and resolving of the promise
+        // return new Promise((resolve, reject) => {
+        //   setTimeout(() => {
+        //   chart.series[0].setData(sampleData);
+        //   chart.hideLoading();
+        //   resolve(true);
+        //   }, 500); // Simulating a delay, adjust as needed
+        // });
+
+      }
+
+      fetchChart_Data("today");
+    </script>  -->
+
+
+{% endblock %}
+

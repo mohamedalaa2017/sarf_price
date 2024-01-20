@@ -1,0 +1,73 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% get_current_language as language_code %}
+    {% if language_code == 'ar' %}
+        <p>This is an Arabic page.</p>
+    {% elif language_code == 'en' %}
+        <p>This is an English page.</p>
+    {% endif %}
+
+    <div id="language-switcher">
+        {% if language_code == 'ar' %}
+            <a href="{% url 'set_language' %}?language=en&next={{ request.path }}" class="language-link">English</a>
+
+        {% elif language_code == 'en' %}
+            <a href="{% url 'set_language' %}?language=ar&next={{ request.path }}" class="language-link">العربية</a>
+
+        {% endif %}
+
+    
+    </div>
+    
+    <button id="myButton">Click me</button>
+
+    <script>
+        // Function to handle button click
+        function handleButtonClick() {
+            // Get the current pathname
+            var currentPathname = window.location.pathname;
+
+            // Check if "/en/" is present in the pathname
+            if (currentPathname.includes("/en/")) {
+                // Remove "/en/" from the pathname
+                var newPathname = currentPathname.replace("/en/", "/");
+                
+                // Update the pathname
+                window.location.pathname = newPathname;
+
+                // Set language to Arabic in local storage
+                localStorage.setItem('language', 'arabic');
+            } else {
+                // Add "/en/" to the beginning of the pathname
+                var newPathname = "/en" + currentPathname;
+
+                // Update the pathname
+                window.location.pathname = newPathname;
+
+                // Set language to English in local storage
+                localStorage.setItem('language', 'english');
+            }
+        }
+
+        // Attach the function to the button click event
+        document.getElementById("myButton").addEventListener("click", handleButtonClick);
+    </script>
+
+
+
+    
+
+
+  
+
+    
+</body>
+</html>

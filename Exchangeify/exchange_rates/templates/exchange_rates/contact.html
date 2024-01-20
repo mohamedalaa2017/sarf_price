@@ -1,0 +1,42 @@
+{% extends 'exchange_rates/layout.html' %} 
+{% load i18n %} 
+{% load static %} 
+
+{% block body %} 
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>{% trans 'اتصل بنا' %}</h2>
+        <br />
+        <div class="contact-form">
+          <h3>
+            {% if language_code == 'ar' %}
+            للتواصل معنا عبر البريد الإلكتروني: <a style="color: blue !important;" href="{{ links.contact_us_email }}"> [{{ links.contact_us_email }}]</a>
+    
+
+            {% elif language_code == 'en' %}
+            Contact us at: <a style="color: blue !important;" href="{{ links.contact_us_email }}"> [{{ links.contact_us_email }}]</a>
+
+            {% endif %}
+          </h3>
+          <br />
+          <br />
+
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+
+
+
+

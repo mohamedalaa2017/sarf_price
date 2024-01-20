@@ -1,0 +1,35 @@
+{% extends 'exchange_rates/layout.html' %} 
+{% load i18n %} 
+{% load static %} 
+
+{% block body %}
+
+
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12">
+
+           
+           <h2>{% trans 'الشروط والأحكام' %}</h2>
+            
+
+            <br />
+            <div class="terms-and-conditions-content">
+                {% if language_code == 'ar' %}
+                    {{ terms_conditions.terms_conditions_ar|safe }}
+                {% elif language_code == 'en' %}
+                    {{ terms_conditions.terms_conditions|safe }}
+                {% endif %} 
+                
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

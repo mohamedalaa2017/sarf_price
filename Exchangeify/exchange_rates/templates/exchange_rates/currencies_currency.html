@@ -1,0 +1,625 @@
+{% extends 'exchange_rates/layout.html' %}
+{% load i18n %}
+{% load static %} 
+
+{%block body %}
+
+
+
+  <div class="container cur-container">
+    <div class="row">
+
+    {% if language_code == 'ar' %}
+    <div
+    class="breadcrumbs"
+    typeof="BreadcrumbList"
+    vocab="https://schema.org/"
+    >
+    <span property="itemListElement" typeof="ListItem">
+      <a
+      property="item"
+      typeof="WebPage"
+      title="اذهب إلى الصرف اليوم"
+      href="{% url 'index' %}"
+      class="home"
+      >
+      <span property="name">الصرف اليوم </span>
+      </a>
+      <meta property="position" content="1" />
+    </span>
+    »
+    <span property="itemListElement" typeof="ListItem">
+      <a
+      property="item"
+      typeof="WebPage"
+      title="اذهب إلى صفحة جميع العملات "
+      href="{% url 'currencies' %}"
+      class="taxonomy category"
+      >
+      <span property="name">العملات </span>
+      </a>
+      <meta property="position" content="2" />
+    </span>
+    »
+    <span class="post post-post current-item">
+      سعر الدولار لحظة بلحظة في مصر
+    </span>
+      </div>
+    {% elif language_code == 'en' %}
+    <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">
+      <span property="itemListElement" typeof="ListItem">
+        <a
+        property="item"
+        typeof="WebPage"
+        title="Go to Sarf Price"
+        href="{% url 'index' %}"
+        class="home"
+        >
+        <span property="name">Sarf Price </span>
+        </a>
+        <meta property="position" content="1" />
+      </span>
+      »
+      <span property="itemListElement" typeof="ListItem">
+        <a
+        property="item"
+        typeof="WebPage"
+        title="go to all currencies page "
+        href="{% url 'currencies' %}"
+        class="taxonomy category"
+        >
+        <span property="name">Currencies </span>
+        </a>
+        <meta property="position" content="2" />
+      </span>
+      »
+      <span class="post post-post current-item">
+        {{ currency.currency.name }} exchange rates in Egypt
+      </span>
+      </div>
+    {% endif %}
+
+      <div class="col-md-8 cur-info-container">
+        <div class="cur-header">
+          <div>
+            {% if language_code == 'ar' %}
+            <h1>{{ currency.currency.name_ar}} / جنيه مصري</h1>
+            <h2> {% trans " سعر "|add:currency.currency.name_ar|add:" اليوم في مصر" %}</h2>
+
+            {% elif language_code == 'en' %}
+            <h1>{{ currency.currency.name}} / {% trans "جنيه مصري" %}</h1>
+            <h2>
+              {% trans "سعر" %} {{ currency.currency.name }} {% trans " اليوم في مصر" %}
+
+            </h2>
+            {% endif %}
+          </div>
+        </div>
+        <div class="cur-cities-rates">
+          <table class="table table-hover local-cur">
+            <thead>
+              <tr>
+                <th> {{ time_egypt_now }} </th>
+                <td></td>
+                <td>{% trans 'شراء' %}</td>
+                <td>{% trans 'مبيع' %}</td>
+                <td>{% trans 'الفرق' %}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>
+                  <a href="{% url 'currencies_currency_type' currency.currency.name 'market' %}">
+                    {% if currency.currency.image %}
+                        <img src="{{ currency.currency.image.url }}" class="cur-flag" />
+                    {% else %}
+                        <img src="" class="cur-flag" />
+                    {% endif %}
+
+                    {% if language_code == 'ar' %}
+                      <span> {{ currency.currency.name_ar}} {% trans "السوق الموازية" %} </span>
+                    {% elif language_code == 'en' %}
+                      <span> {{ currency.currency.name}} {% trans "السوق الموازية" %} </span>      
+                    {% endif %}
+                    <span class="cur-ramz"> <strong>({{ currency.currency.abbreviation }})</strong>:</span>
+
+
+                  </a>
+                </th>
+                <td></td>
+                <td><strong>{{ currency.buy_market_price }}</strong></td>
+                <td><strong>{{ currency.sell_market_price }}</strong></td>
+                <td class="change-td">
+                  <span class="change-percentage" style="color: #52b55f"
+                    >{{ currency.market_change }}</span
+                  >
+                  <svg
+                    class="arrow up"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 12 8"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentcolor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="m1 6 5-4 5 4"
+                    ></path>
+                  </svg>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <a href="{% url 'currencies_currency_type' currency.currency.name 'bank' %}">
+                    {% if currency.currency.image %}
+                        <img src="{{ currency.currency.image.url }}" class="cur-flag" />
+                    {% else %}
+                        <img src="" class="cur-flag" />
+                    {% endif %}
+                    
+                    {% if language_code == 'ar' %}
+                      <span> {{ currency.currency.name_ar}} البنك المركزي </span>
+                    {% elif language_code == 'en' %}
+                      <span> {{ currency.currency.name}} bank </span>      
+                    {% endif %}
+                    <span class="cur-ramz"> <strong>({{ currency.currency.abbreviation }})</strong>:</span>
+                  </a>
+                </th>
+                <td></td>
+                <td><strong>{{ currency.buy_bank_price }}</strong></td>
+                <td><strong>{{ currency.sell_bank_price }}</strong></td>
+                <td class="change-td">
+                  <span class="change-percentage" style="color: #52b55f"
+                    >{{ currency.bank_change }}</span
+                  >
+                  <svg
+                    class="arrow up"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 12 8"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentcolor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="m1 6 5-4 5 4"
+                    ></path>
+                  </svg>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- <span style="position:relative; top:-10px; font-style:italic"><i class="fa fa-info-circle" style="margin-left:5px;"></i> {% trans "اضغط على المدينة لمشاهدة الرسم البياني" %}</span> -->
+
+          <div class="cur-convert-data">
+            <!-- <h3>الدولار إلى جنيه مصري</h3> -->
+            {% if language_code == 'ar' %}
+            <h3>{{  currency.currency.name_ar}} الي  {% trans "جنيه مصري" %} </h3>
+            {% elif language_code == 'en' %}
+            <h3>{{  currency.currency.name}}  To  {% trans "جنيه مصري" %}</h3>
+            {% endif %}
+            <table class="table table-hover local-cur">
+              <thead>
+                <tr>
+                {% if language_code == 'ar' %}
+                <td>{{ currency.currency.name_ar }}</td>
+                {% elif language_code == 'en' %}
+                <td>{{ currency.currency.name }}</td>
+                {% endif %}
+      
+                  
+                  <td> {% trans "جنيه مصري" %} </td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for key, value in currency_exchange.items %}
+                <tr>
+                  {% if language_code == 'ar' %}
+                  <td><strong>{{ key }} {{ currency.currency.name_ar }}</strong></td>
+                  {% elif language_code == 'en' %}
+                  <td><strong>{{ key }} {{ currency.currency.name }}</strong></td>
+                  {% endif %}
+                  <td><strong>{{ value}} {% trans "جنيه مصري" %}</strong></td>
+                </tr>
+                
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- <div class="cur-change-data">
+            <h3>التغير بسعر الدولار مقابل الجنيه المصري في السوق الموازية</h3>
+            <table>
+              <thead>
+                <tr>
+                  <td>أسبوعي</td>
+                  <td>شهري</td>
+                  <td>سنوي</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <span class="down">0% (0)</span>
+                  </td>
+                  <td>
+                    <span class="down">0% (0)</span>
+                  </td>
+                  <td>
+                    <span class="down">NA% (0)</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+        </div>
+      </div>
+      <!-- <div class="col-md-4" style="margin-top: 20px">
+        <div class="panel panel-default converter">
+          <div class="panel-heading">محول العملات</div>
+          <div class="panel-heading sell_buy">
+            <div class="sell-input">
+              <label for="sell_radio">
+                <input
+                  id="sell_radio"
+                  value="sell"
+                  name="sell_buy_radio"
+                  type="radio"
+                />
+                شراء
+              </label>
+            </div>
+            <div class="buy-input">
+              <label for="buy_radio">
+                <input
+                  id="buy_radio"
+                  value="buy"
+                  name="sell_buy_radio"
+                  checked="checked"
+                  type="radio"
+                />
+                مبيع
+              </label>
+            </div>
+          </div>
+          <div class="panel-body">
+            <input
+              type="number"
+              id="f_amount"
+              class="result1 form-control"
+              autocomplete="off"
+              placeholder="المبلغ هنا ..."
+            />
+            <select
+              name="cur2"
+              id="from"
+              class="form-control cur-change"
+              tabindex="1"
+            >
+              <option value="USD">دولار أمريكي</option>
+              <option value="EUR">يورو</option>
+              <option value="TRY">ليرة تركية</option>
+              <option value="SAR">ريال سعودي</option>
+              <option value="AED">درهم إماراتي</option>
+              <option value="LYD">دينار ليبي</option>
+              <option value="JOD">دينار أردني</option>
+              <option value="KWD">دينار كويتي</option>
+              <option value="GBP">جنيه استرليني</option>
+              <option value="QAR">ريال قطري</option>
+              <option value="OMR">ريال عماني</option>
+              <option value="BHD">دينار بحريني</option>
+              <option value="CAD">دولار كندي</option>
+              <option value="SEK">كرون سويدي</option>
+              <option value="NOK">كرون نرويجي</option>
+              <option value="DKK">كرون دينماركي</option>
+              <option value="SYP">ليرة سورية</option>
+              <option value="DZD">دينار جزائري</option>
+              <option value="MAD">درهم مغربي</option>
+              <option value="TND">دينار تونسي</option>
+              <option value="RUB">روبل روسي</option>
+              <option value="MYR">رينغيت ماليزي</option>
+              <option value="BRL">ريال برازيلي</option>
+              <option value="NZD">دولار نيوزيلاندي</option>
+              <option value="CHF">فرنك سويسري</option>
+              <option value="AUD">دولار أسترالي</option>
+              <option value="ZAR">راند جنوب أفريقي</option>
+              <option value="IQD">دينار عراقي</option>
+              <option value="IRR">ريال إيراني</option>
+              <option value="SGD">دولار سينغافوري</option>
+              <option value="EGP">جنيه مصري</option>
+            </select>
+            <input
+              type="number"
+              class="result2 resultval2 form-control"
+              id="t_amount"
+              placeholder="المبلغ هنا  ..."
+            />
+            <select
+              name="cur2"
+              id="to"
+              class="form-control cur-change"
+              tabindex="1"
+            >
+              <option selected value="EGP">جنيه مصري</option>
+              <option value="USD">دولار أمريكي</option>
+              <option value="EUR">يورو</option>
+              <option value="TRY">ليرة تركية</option>
+              <option value="SAR">ريال سعودي</option>
+              <option value="AED">درهم إماراتي</option>
+              <option value="LYD">دينار ليبي</option>
+              <option value="JOD">دينار أردني</option>
+              <option value="KWD">دينار كويتي</option>
+              <option value="GBP">جنيه استرليني</option>
+              <option value="QAR">ريال قطري</option>
+              <option value="OMR">ريال عماني</option>
+              <option value="BHD">دينار بحريني</option>
+              <option value="CAD">دولار كندي</option>
+              <option value="SEK">كرون سويدي</option>
+              <option value="NOK">كرون نرويجي</option>
+              <option value="DKK">كرون دينماركي</option>
+              <option value="SYP">ليرة سورية</option>
+              <option value="DZD">دينار جزائري</option>
+              <option value="MAD">درهم مغربي</option>
+              <option value="TND">دينار تونسي</option>
+              <option value="RUB">روبل روسي</option>
+              <option value="MYR">رينغيت ماليزي</option>
+              <option value="BRL">ريال برازيلي</option>
+              <option value="NZD">دولار نيوزيلاندي</option>
+              <option value="CHF">فرنك سويسري</option>
+              <option value="AUD">دولار أسترالي</option>
+              <option value="ZAR">راند جنوب أفريقي</option>
+              <option value="IQD">دينار عراقي</option>
+              <option value="IRR">ريال إيراني</option>
+              <option value="SGD">دولار سينغافوري</option>
+            </select>
+          </div>
+        </div>
+      </div> -->
+
+      {% if language_code == 'ar' %}
+        <!-- currency converter arabic  -->
+        <div class="col-md-4" style="margin-top: 20px">
+          <div class="panel panel-default converter">
+            <div class="panel-heading">محول العملات</div>
+            <div class="panel-heading sell_buy">
+              <div class="sell-input">
+                <label for="sell_radio">
+                  <input
+                    id="sell_radio"
+                    value="sell"
+                    name="sell_buy_radio"
+                    type="radio"
+                  />
+                  شراء
+                </label>
+              </div>
+              <div class="buy-input">
+                <label for="buy_radio">
+                  <input
+                    id="buy_radio"
+                    value="buy"
+                    name="sell_buy_radio"
+                    checked="checked"
+                    type="radio"
+                  />
+                  مبيع
+                </label>
+              </div>
+            </div>
+            <div class="panel-body">
+              <input
+                type="number"
+                id="f_amount"
+                class="result1 form-control"
+                autocomplete="off"
+                placeholder="المبلغ هنا ..."
+              />
+              <select
+                name="cur2"
+                id="from"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option value="USD">دولار أمريكي</option>
+                <option value="EUR">يورو</option>
+                <option value="TRY">ليرة تركية</option>
+                <option value="SAR">ريال سعودي</option>
+                <option value="AED">درهم إماراتي</option>
+                <option value="LYD">دينار ليبي</option>
+                <option value="JOD">دينار أردني</option>
+                <option value="KWD">دينار كويتي</option>
+                <option value="GBP">جنيه استرليني</option>
+                <option value="QAR">ريال قطري</option>
+                <option value="OMR">ريال عماني</option>
+                <option value="BHD">دينار بحريني</option>
+                <option value="CAD">دولار كندي</option>
+                <option value="SEK">كرون سويدي</option>
+                <option value="NOK">كرون نرويجي</option>
+                <option value="DKK">كرون دينماركي</option>
+                <option value="SYP">ليرة سورية</option>
+                <option value="DZD">دينار جزائري</option>
+                <option value="MAD">درهم مغربي</option>
+                <option value="TND">دينار تونسي</option>
+                <option value="RUB">روبل روسي</option>
+                <option value="MYR">رينغيت ماليزي</option>
+                <option value="BRL">ريال برازيلي</option>
+                <option value="NZD">دولار نيوزيلاندي</option>
+                <option value="CHF">فرنك سويسري</option>
+                <option value="AUD">دولار أسترالي</option>
+                <option value="ZAR">راند جنوب أفريقي</option>
+                <option value="IQD">دينار عراقي</option>
+                <option value="IRR">ريال إيراني</option>
+                <option value="SGD">دولار سينغافوري</option>
+                <option value="EGP">جنيه مصري</option>
+              </select>
+              <input
+                type="number"
+                class="result2 resultval2 form-control"
+                id="t_amount"
+                placeholder="المبلغ هنا  ..."
+              />
+              <select
+                name="cur2"
+                id="to"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option selected value="EGP">جنيه مصري</option>
+                <option value="USD">دولار أمريكي</option>
+                <option value="EUR">يورو</option>
+                <option value="TRY">ليرة تركية</option>
+                <option value="SAR">ريال سعودي</option>
+                <option value="AED">درهم إماراتي</option>
+                <option value="LYD">دينار ليبي</option>
+                <option value="JOD">دينار أردني</option>
+                <option value="KWD">دينار كويتي</option>
+                <option value="GBP">جنيه استرليني</option>
+                <option value="QAR">ريال قطري</option>
+                <option value="OMR">ريال عماني</option>
+                <option value="BHD">دينار بحريني</option>
+                <option value="CAD">دولار كندي</option>
+                <option value="SEK">كرون سويدي</option>
+                <option value="NOK">كرون نرويجي</option>
+                <option value="DKK">كرون دينماركي</option>
+                <option value="SYP">ليرة سورية</option>
+                <option value="DZD">دينار جزائري</option>
+                <option value="MAD">درهم مغربي</option>
+                <option value="TND">دينار تونسي</option>
+                <option value="RUB">روبل روسي</option>
+                <option value="MYR">رينغيت ماليزي</option>
+                <option value="BRL">ريال برازيلي</option>
+                <option value="NZD">دولار نيوزيلاندي</option>
+                <option value="CHF">فرنك سويسري</option>
+                <option value="AUD">دولار أسترالي</option>
+                <option value="ZAR">راند جنوب أفريقي</option>
+                <option value="IQD">دينار عراقي</option>
+                <option value="IRR">ريال إيراني</option>
+                <option value="SGD">دولار سينغافوري</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      {% elif language_code == 'en' %}
+        <!-- currency converter english  -->
+        <div class="col-md-4" style="margin-top: 20px">
+          <div class="panel panel-default converter">
+            <div class="panel-heading">Currency Converter</div>
+            <div class="panel-heading sell_buy">
+              <div class="sell-input">
+                <label for="sell_radio">
+                  <input
+                    id="sell_radio"
+                    value="sell"
+                    name="sell_buy_radio"
+                    type="radio"
+                  />
+                  Buy
+                </label>
+              </div>
+              <div class="buy-input">
+                <label for="buy_radio">
+                  <input
+                    id="buy_radio"
+                    value="buy"
+                    name="sell_buy_radio"
+                    checked="checked"
+                    type="radio"
+                  />
+                  Sell
+                </label>
+              </div>
+            </div>
+            <div class="panel-body">
+              <input
+                type="number"
+                id="f_amount"
+                class="result1 form-control"
+                autocomplete="off"
+                placeholder="Amount here ..."
+              />
+              <select
+                name="cur2"
+                id="from"
+                class="form-control cur-change"
+                tabindex="1"
+              >
+                <option value="USD">US Dollar</option>
+                <option value="EUR">Euro</option>
+                <option value="TRY">Turkish Lira</option>
+                <option value="SAR">Saudi Riyal</option>
+                <option value="AED">Emirate Dirham</option>
+                <option value="LYD">Libyan Dinar</option>
+                <option value="JOD">Jordanian Dinar</option>
+                <option value="KWD">Kuwaiti Dinar</option>
+                <option value="GBP">British Pound</option>
+                <option value="QAR">Qatari Riyal</option>
+                <option value="OMR">Omani Riyal</option>
+                <option value="BHD">Bahraini Dinar</option>
+                <option value="CAD">Canadian Dollar</option>
+                <option value="SEK">Swedish Krona</option>
+                <option value="NOK">Norwegian Krone</option>
+                <option value="DKK">Danish Krone</option>
+                <option value="SYP">Syrian Pound</option>
+                <option value="DZD">Algerian Dinar</option>
+                <option value="MAD">Moroccan Dirham</option>
+                <option value="TND">Tunisian Dinar</option>
+                <option value="RUB">Russian Ruble</option>
+                <option value="MYR">Malaysian Ringgit</option>
+                <option value="BRL">Brazilian Real</option>
+                <option value="NZD">New Zealand Dollar</option>
+                <option value="CHF">Swiss Franc</option>
+                <option value="AUD">Australian Dollar</option>
+                <option value="ZAR">South African Rand</option>
+                <option value="IQD">Iraqi Dinar</option>
+                <option value="IRR">Iranian Rial</option>
+                <option value="SGD">Singapore Dollar</option>
+                <option value="EGP">Egyptian Pound</option>
+              </select>
+              <input
+                type="number"
+                class="result2 resultval2 form-control"
+                id="t_amount"
+                placeholder="Amount here  ..."
+              />
+              <select name="cur2" id="to" class="form-control cur-change" tabindex="1">
+                <option selected value="EGP">Egyptian Pound</option>
+                <option value="USD">US Dollar</option>
+                <option value="EUR">Euro</option>
+                <option value="TRY">Turkish Lira</option>
+                <option value="SAR">Saudi Riyal</option>
+                <option value="AED">Emirate Dirham</option>
+                <option value="LYD">Libyan Dinar</option>
+                <option value="JOD">Jordanian Dinar</option>
+                <option value="KWD">Kuwaiti Dinar</option>
+                <option value="GBP">British Pound</option>
+                <option value="QAR">Qatari Riyal</option>
+                <option value="OMR">Omani Riyal</option>
+                <option value="BHD">Bahraini Dinar</option>
+                <option value="CAD">Canadian Dollar</option>
+                <option value="SEK">Swedish Krona</option>
+                <option value="NOK">Norwegian Krone</option>
+                <option value="DKK">Danish Krone</option>
+                <option value="SYP">Syrian Pound</option>
+                <option value="DZD">Algerian Dinar</option>
+                <option value="MAD">Moroccan Dirham</option>
+                <option value="TND">Tunisian Dinar</option>
+                <option value="RUB">Russian Ruble</option>
+                <option value="MYR">Malaysian Ringgit</option>
+                <option value="BRL">Brazilian Real</option>
+                <option value="NZD">New Zealand Dollar</option>
+                <option value="CHF">Swiss Franc</option>
+                <option value="AUD">Australian Dollar</option>
+                <option value="ZAR">South African Rand</option>
+                <option value="IQD">Iraqi Dinar</option>
+                <option value="IRR">Iranian Rial</option>
+                <option value="SGD">Singapore Dollar</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+{% endblock %}

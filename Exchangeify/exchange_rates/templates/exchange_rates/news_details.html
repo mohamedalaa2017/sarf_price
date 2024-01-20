@@ -1,0 +1,39 @@
+{% extends 'exchange_rates/layout.html' %}
+{% load i18n %} 
+{% load static %} 
+
+{% block head %}
+<meta name="description" content="{{ post.meta_description }}">
+{% endblock %}
+
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'exchange_rates/css/articles.css' %}" />
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <article>
+        <div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/" role="navigation"></div>
+        <h1 class="entry-title">{{ post.title }}</h1>
+        <div class="entry-desc">
+          <i class="fa fa-calendar"></i>
+          <span><time datetime="{{ post.created_at }}">{{ post.created_at|date:"m/d/Y" }}</time></span>
+        </div>
+        <div class="entry-content">
+          <figure class="wp-block-image">
+            <img decoding="async" src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid custom-image" />
+          </figure>
+          <div class="image-content-space"></div>
+          {{ post.content|safe }}
+          <div class="content-footer-space"></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

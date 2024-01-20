@@ -1,0 +1,109 @@
+<div class="panel panel-default converter">
+  <div class="panel-heading">Currency Converter</div>
+  <div class="panel-heading sell_buy">
+    <div class="sell-input">
+      <label for="sell_radio">
+        <input
+          id="sell_radio"
+          value="sell"
+          name="sell_buy_radio"
+          type="radio"
+        />
+        Buy
+      </label>
+    </div>
+    <div class="buy-input">
+      <label for="buy_radio">
+        <input
+          id="buy_radio"
+          value="buy"
+          name="sell_buy_radio"
+          checked="checked"
+          type="radio"
+        />
+        Sell
+      </label>
+    </div>
+  </div>
+  <div class="panel-body">
+    <input
+      type="number"
+      id="f_amount"
+      class="result1 form-control"
+      autocomplete="off"
+      placeholder="Amount here ..."
+    />
+    <select name="cur2" id="from" class="form-control cur-change" tabindex="1">
+      <option value="USD">US Dollar</option>
+      <option value="EUR">Euro</option>
+      <option value="TRY">Turkish Lira</option>
+      <option value="SAR">Saudi Riyal</option>
+      <option value="AED">Emirate Dirham</option>
+      <option value="LYD">Libyan Dinar</option>
+      <option value="JOD">Jordanian Dinar</option>
+      <option value="KWD">Kuwaiti Dinar</option>
+      <option value="GBP">British Pound</option>
+      <option value="QAR">Qatari Riyal</option>
+      <option value="OMR">Omani Riyal</option>
+      <option value="BHD">Bahraini Dinar</option>
+      <option value="CAD">Canadian Dollar</option>
+      <option value="SEK">Swedish Krona</option>
+      <option value="NOK">Norwegian Krone</option>
+      <option value="DKK">Danish Krone</option>
+      <option value="SYP">Syrian Pound</option>
+      <option value="DZD">Algerian Dinar</option>
+      <option value="MAD">Moroccan Dirham</option>
+      <option value="TND">Tunisian Dinar</option>
+      <option value="RUB">Russian Ruble</option>
+      <option value="MYR">Malaysian Ringgit</option>
+      <option value="BRL">Brazilian Real</option>
+      <option value="NZD">New Zealand Dollar</option>
+      <option value="CHF">Swiss Franc</option>
+      <option value="AUD">Australian Dollar</option>
+      <option value="ZAR">South African Rand</option>
+      <option value="IQD">Iraqi Dinar</option>
+      <option value="IRR">Iranian Rial</option>
+      <option value="SGD">Singapore Dollar</option>
+      <option value="EGP">Egyptian Pound</option>
+    </select>
+    <input
+      type="number"
+      class="result2 resultval2 form-control"
+      id="t_amount"
+      placeholder="Amount here  ..."
+    />
+    <select name="cur2" id="to" class="form-control cur-change" tabindex="1">
+      <option selected value="EGP">Egyptian Pound</option>
+      <option value="USD">US Dollar</option>
+      <option value="EUR">Euro</option>
+      <option value="TRY">Turkish Lira</option>
+      <option value="SAR">Saudi Riyal</option>
+      <option value="AED">Emirate Dirham</option>
+      <option value="LYD">Libyan Dinar</option>
+      <option value="JOD">Jordanian Dinar</option>
+      <option value="KWD">Kuwaiti Dinar</option>
+      <option value="GBP">British Pound</option>
+      <option value="QAR">Qatari Riyal</option>
+      <option value="OMR">Omani Riyal</option>
+      <option value="BHD">Bahraini Dinar</option>
+      <option value="CAD">Canadian Dollar</option>
+      <option value="SEK">Swedish Krona</option>
+      <option value="NOK">Norwegian Krone</option>
+      <option value="DKK">Danish Krone</option>
+      <option value="SYP">Syrian Pound</option>
+      <option value="DZD">Algerian Dinar</option>
+      <option value="MAD">Moroccan Dirham</option>
+      <option value="TND">Tunisian Dinar</option>
+      <option value="RUB">Russian Ruble</option>
+      <option value="MYR">Malaysian Ringgit</option>
+      <option value="BRL">Brazilian Real</option>
+      <option value="NZD">New Zealand Dollar</option>
+      <option value="CHF">Swiss Franc</option>
+      <option value="AUD">Australian Dollar</option>
+      <option value="ZAR">South African Rand</option>
+      <option value="IQD">Iraqi Dinar</option>
+      <option value="IRR">Iranian Rial</option>
+      <option value="SGD">Singapore Dollar</option>
+    </select>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+
+
+
+
+{% extends 'exchange_rates/layout.html' %} 
+{% load i18n %} 
+{% load static %} 
+
+{% block body %}
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>{% trans 'سياسة الخصوصية' %}</h2>
+            <br />
+            <div class="privacy-policy-content">
+                {% if language_code == 'ar' %}
+                    {{ privacy_policy.privacy_policy_ar|safe }}
+                {% elif language_code == 'en' %}
+                    {{ privacy_policy.privacy_policy|safe }}
+                {% endif %} 
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            </div>
+        </div>
+    </div>
+      
+
+{% endblock %}

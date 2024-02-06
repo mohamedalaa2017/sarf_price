@@ -1,22 +1,6 @@
-// if(appMode!="production"){console.log("main js",{appLang});console.log("main js",{baseUrl});}
-// if(appMode!="development"){baseUrl=baseUrl.replace("http://","https://");}
-// changeLang(appLang);var url=window.location;$('ul.nav a[href="'+url+'"]').parent().addClass("active");$("ul.nav a").filter(function(){return this.href==url;}).parent().addClass("active");function setCookie(name,value,days){if(days){var date=new Date();date.setTime(date.getTime()+days*24*60*60*1000);var expires="; expires="+date.toGMTString();}else var expires="";document.cookie=name+"="+value+expires+"; path=/";}
-// function changeLang(lang){setCookie("lang",lang,1000);}
-// function changeCurType(){var cur=document.getElementById("currency-select");var strCur=cur.options[cur.selectedIndex].value;setCookie("c",strCur,100);document.location.reload();}
-// function changeCurCitySingle(){var cur=document.getElementById("currency-select");var strCur=cur.options[cur.selectedIndex].value;setCookie("c",strCur,100);location.href=location.href.replace(location.pathname.split("/").slice(-1)[0],strCur);}
-// $("#submit_email").submit(function(e){e.preventDefault();var postData=$(this).serialize();$.ajax({url:"email_submit.php",type:"POST",data:postData,success:function(r){alert(r);},});});function getCookie(cname){var name=cname+"=";var ca=document.cookie.split(";");for(var i=0;i<ca.length;i++){var c=ca[i];while(c.charAt(0)==" ")c=c.substring(1);if(c.indexOf(name)!=-1)return c.substring(name.length,c.length);}
-// return "";}
-// jQuery(document).ready(function(){if(getCookie("join_tme")!=1){$("#join_tme").modal("toggle");setCookie("join_tme",1,100);}
-// var cur=(function(){var cur=null;$.ajax({async:false,global:false,url:baseUrl+"/fcur/fcur2.json",dataType:"json",success:function(data){cur=data;},});return cur;})();var x=getCookie("c");var url=baseUrl+"/app_api/cur_market.json";var cursyp=(function(){var cursyp=null;$.ajax({async:false,global:false,url:url+"?"+Date.now(),dataType:"json",success:function(data){cursyp=data;},});return cursyp;})();$("#f_amount").add("#from").add("#to").add("#sell_radio").add("#buy_radio").bind("change paste keyup",function(){if($("#sell_radio").is(":checked")){cur.USDEGP=cursyp[0].ask;cur.EUREGP=cursyp[1].ask;cur.TRYEGP=cursyp[2].ask;cur.EGPEGP=cursyp[3].ask;cur.SAREGP=cursyp[4].ask;cur.JODEGP=cursyp[5].ask;cur.AEDEGP=cursyp[6].ask;cur.QAREGP=cursyp[7].ask;cur.BHDEGP=cursyp[8].ask;cur.LYDEGP=cursyp[9].ask;cur.KWDEGP=cursyp[10].ask;cur.OMREGP=cursyp[11].ask;cur.GBPEGP=cursyp[12].ask;cur.SEKEGP=cursyp[13].ask;cur.CADEGP=cursyp[14].ask;cur.NOKEGP=cursyp[15].ask;cur.DKKEGP=cursyp[16].ask;}else{cur.USDEGP=cursyp[0].bid;cur.EUREGP=cursyp[1].bid;cur.TRYEGP=cursyp[2].bid;cur.EGPEGP=cursyp[3].bid;cur.SAREGP=cursyp[4].bid;cur.JODEGP=cursyp[5].bid;cur.AEDEGP=cursyp[6].bid;cur.QAREGP=cursyp[7].bid;cur.BHDEGP=cursyp[8].bid;cur.LYDEGP=cursyp[9].bid;cur.KWDEGP=cursyp[10].bid;cur.OMREGP=cursyp[11].bid;cur.GBPEGP=cursyp[12].bid;cur.SEKEGP=cursyp[13].bid;cur.CADEGP=cursyp[14].bid;cur.NOKEGP=cursyp[15].bid;cur.DKKEGP=cursyp[16].bid;}
-// from=$("#from").val();to=$("#to").val();if(from=="EGP"||to=="EGP")$(".sell_buy").fadeIn(200);else $(".sell_buy").fadeOut(200);if(cur[from+to]){rate=cur[from+to];}else if(cur[to+from]&&!cur[from+to]){rate=1/cur[to+from];}else if(from==to){rate=1;}else{rate=cur[from+to];}
-// if(!rate){rate=1;}
-// if(isNaN(Math.round($("#f_amount").val()*rate*1000)/1000)){$("#t_amount").val(0);}else{$("#t_amount").val(Math.round($("#f_amount").val()*rate*1000)/1000);}});$("#t_amount").add("#to").add("#from").add("#sell_radio").add("#buy_radio").bind("change paste keyup",function(){if($("#sell_radio").is(":checked")){cur.USDEGP=cursyp[0].ask;cur.EUREGP=cursyp[1].ask;cur.TRYEGP=cursyp[2].ask;cur.EGPEGP=cursyp[3].ask;cur.SAREGP=cursyp[4].ask;cur.JODEGP=cursyp[5].ask;cur.AEDEGP=cursyp[6].ask;cur.QAREGP=cursyp[7].ask;cur.BHDEGP=cursyp[8].ask;cur.LYDEGP=cursyp[9].ask;cur.KWDEGP=cursyp[10].ask;cur.OMREGP=cursyp[11].ask;cur.GBPEGP=cursyp[12].ask;cur.SEKEGP=cursyp[13].ask;cur.CADEGP=cursyp[14].ask;cur.NOKEGP=cursyp[15].ask;cur.DKKEGP=cursyp[16].ask;}else{cur.USDEGP=cursyp[0].bid;cur.EUREGP=cursyp[1].bid;cur.TRYEGP=cursyp[2].bid;cur.EGPEGP=cursyp[3].bid;cur.SAREGP=cursyp[4].bid;cur.JODEGP=cursyp[5].bid;cur.AEDEGP=cursyp[6].bid;cur.QAREGP=cursyp[7].bid;cur.BHDEGP=cursyp[8].bid;cur.LYDEGP=cursyp[9].bid;cur.KWDEGP=cursyp[10].bid;cur.OMREGP=cursyp[11].bid;cur.GBPEGP=cursyp[12].bid;cur.SEKEGP=cursyp[13].bid;cur.CADEGP=cursyp[14].bid;cur.NOKEGP=cursyp[15].bid;cur.DKKEGP=cursyp[16].bid;}
-// to=$("#to").val();from=$("#from").val();if(cur[to+from]&&!cur[from+to]){rate=cur[to+from];}else if(!cur[to+from]&&cur[from+to]){rate=1/cur[from+to];}else if(from==to){rate=1;}else{rate=cur[from+to];}
-// $("#f_amount").val(Math.round($("#t_amount").val()*rate*1000)/1000);});});
 
 
-
-
+// hide news if the the language is english
 document.addEventListener("DOMContentLoaded", function() {
   let arabic_change = document.querySelector("#for_remove_this_if_news")
   if (window.location.pathname.includes("news")) {
@@ -38,17 +22,24 @@ function changeCurType() {
     .then(data => {
 
 
+      // Define the sequence of currencies
+      let currencySequence = ['USD', 'EUR', 'GBP', 'SAR', 'JOB', 'AED', 'TRY', 'KWD', 'QAR', 'BHD', 'MAD', 'CAD', 'CHF', 'AUD', 'OMR'];
+
       // Get the tbody element
-      var tbody = document.querySelector('.local-cur tbody');
+      let tbody = document.querySelector('.local-cur tbody');
       tbody.innerHTML = ""; // Clear existing content
 
       // Condition to check if the URL contains '/en/'
-      var isEnglish = window.location.pathname.includes('/en/');
-      var currency_numbers = isEnglish ? 15 : 7;
+      let isEnglish = window.location.pathname.includes('/en/');
+      let currency_numbers = isEnglish ? 15 : 7;
 
+      // Filter and sort data based on the specified currency sequence
+      let filteredData = data.filter(currency => currencySequence.includes(currency.currency.abbreviation));
+      filteredData.sort((a, b) => currencySequence.indexOf(a.currency.abbreviation) - currencySequence.indexOf(b.currency.abbreviation));
 
       // Populate the tbody with the new data
-      data.slice(0, currency_numbers).forEach(currency => {
+      filteredData.slice(0, currency_numbers).forEach(currency => {
+
         var row = document.createElement("tr");
 
         // Conditionally choose the currency name based on language
@@ -184,12 +175,12 @@ async function fetchData() {
 
 (async () => {
   cur = await fetchData();
-  console.log('Accessing cur:', cur);
 
 })();
 
 const fAmountInput = document.getElementById("f_amount");
 const tAmountInput = document.getElementById("t_amount");
+tAmountInput.disabled = true;
 
 
 
@@ -207,14 +198,18 @@ const batchedUpdate = () => {
 fAmountInput.addEventListener("input", batchedUpdate);
 tAmountInput.addEventListener("input", batchedUpdate);
 
-fromDropdown.addEventListener("change", updateCurrencyConversion);
+fromDropdown.addEventListener("change", handleIfChange);
 
-toDropdown.addEventListener("change", updateCurrencyConversion);
+toDropdown.addEventListener("change", handleIfChange);
 
 sellRadio.addEventListener("change", updateCurrencyConversion);
 buyRadio.addEventListener("change", updateCurrencyConversion);
 
-
+function handleIfChange() {
+  fAmountInput.value = 0
+  tAmountInput.value = 0
+  updateCurrencyConversion()
+}
 
 // Currency Converter Function 
 function updateCurrencyConversion() {
@@ -253,6 +248,7 @@ function updateCurrencyConversion() {
     cur = [...cur, newCurrency];
 
 
+
     const fromCurrencyData = cur.find((currency) => currency.currency === from);
     const toCurrencyData = cur.find((currency) => currency.currency === to);
 
@@ -273,35 +269,50 @@ function updateCurrencyConversion() {
 
 
 
-      
+ 
       
       // if the from amount or to amount is active 
       if (document.activeElement === fAmountInput) {
-        if (toCurrencyData.currency === "EGP") {
-          console.log(toAmount)
-          console.log(currency_from_value)
-          const convertedToAmount = (currency_from_value / fromAmount);
+        if (toCurrencyData.currency === "EGP" || fromCurrencyData.currency === "EGP") {
+
+          
+          const convertedToAmount = (currency_from_value * fAmountInput.value);
           tAmountInput.value = convertedToAmount.toFixed(2);
-        }
-        else {
+          the_value = tAmountInput.value
+
+        } else {
+
           const convertedToAmount = (fromAmount * currency_from_value) / currency_to_value;
           tAmountInput.value = convertedToAmount.toFixed(2);
+
         }
         
         return; // Return and terminate the function
+
       } else if (document.activeElement === tAmountInput) {
-
+        console.log()
         
-        if (fromCurrencyData.currency === "EGP") {
+        
+        // if (toCurrencyData.currency  === "EGP" ||  fromCurrencyData.currency === "EGP" ) {    
+        //   console.log("##################")
+        //   console.log(toAmount)
+        //   console.log(currency_to_value)
+        //   console.log(currency_from_value) 
+        //   console.log((currency_from_value / 1) * toAmount)
+        //   console.log("##################")
+        //   const convertedFromAmount = ((currency_from_value / 1) * toAmount);
+        //   fAmountInput.value = convertedFromAmount.toFixed(2);
 
-          const convertedFromAmount = (toAmount * currency_to_value) * toAmount;
-          fAmountInput.value = convertedFromAmount.toFixed(2);
+        // } else {
 
-        }
-        else {
-          const convertedFromAmount = (toAmount * currency_to_value) / currency_from_value;
-          fAmountInput.value = convertedFromAmount.toFixed(2);
-        }
+        //   // const convertedFromAmount = (toAmount * currency_to_value) / currency_from_value;
+        //   // fAmountInput.value = convertedFromAmount.toFixed(2);
+
+        //   const convertedFromAmount = (toAmount * currency_to_value) ;
+        //   fAmountInput.value = convertedFromAmount.toFixed(2);
+
+          
+        // }
         return; // Return and terminate the function
       }
   

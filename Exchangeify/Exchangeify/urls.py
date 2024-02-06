@@ -51,7 +51,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path("admin/", admin.site.urls),
+    path("adminsitepanal/", admin.site.urls),
     path("", include("exchange_rates.urls")),
     prefix_default_language=False,
     # other app-specific URL patterns...

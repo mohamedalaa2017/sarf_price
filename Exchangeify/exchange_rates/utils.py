@@ -20,7 +20,7 @@ class CurrencyInfoNav:
         match = pattern.match(change)
 
         if match:
-            percentage = f'{match.group(1)} %'
+            percentage = f'%{match.group(1)}'
             value_in_parentheses = f'({match.group(2)})'
         else:
             percentage = ''

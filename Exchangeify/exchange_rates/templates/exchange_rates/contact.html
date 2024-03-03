@@ -13,12 +13,11 @@
         <div class="contact-form">
           <h3>
             {% if language_code == 'ar' %}
-            للتواصل معنا عبر البريد الإلكتروني: <a style="color: blue !important;" href="{{ links.contact_us_email }}"> [{{ links.contact_us_email }}]</a>
+            للتواصل معنا عبر البريد الإلكتروني: <a style="color: blue !important;" href="#"> [{{ links.contact_us_email }}]</a>
     
 
             {% elif language_code == 'en' %}
-            <!-- Contact us at:  <a style="color: blue !important;" href="{{ links.contact_us_email }}"> [{{ links.contact_us_email }}]</a> -->
-            Contact us at:  <span  style="color: blue !important;" > {{ links.contact_us_email }} </span>
+            Contact us at:  <a style="color: blue !important;" href="#"> [{{ links.contact_us_email }}]</a>
 
             {% endif %}
           </h3>

@@ -2,6 +2,18 @@ from django.urls import path
 from . import views
 from .views import CurrencyPricesListView, CurrencyChartsListView, CurrencyConverterListView, GoldChartsListView
 
+from django.contrib.sitemaps import views as sitemap_views
+from exchange_rates.sitemaps import ExchangeRatesSitemap
+
+sitemaps = {
+    'exchange_rates': ExchangeRatesSitemap,
+}
+
+urlpatterns = [
+    path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
+]
+
 
 urlpatterns = [
     # api 

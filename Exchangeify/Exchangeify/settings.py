@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_celery_beat',
     'rosetta',
     "rest_framework",
+    'django.contrib.sitemaps',
 
 
 ]

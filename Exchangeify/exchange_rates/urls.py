@@ -3,19 +3,21 @@ from . import views
 from .views import CurrencyPricesListView, CurrencyChartsListView, CurrencyConverterListView, GoldChartsListView
 
 from django.contrib.sitemaps import views as sitemap_views
-from exchange_rates.sitemaps import ExchangeRatesSitemap
+from .sitemaps import ExchangeRatesSitemap
 
 sitemaps = {
     'exchange_rates': ExchangeRatesSitemap,
 }
 
+from django.contrib.sitemaps.views import index as sitemap_index
+from django.contrib.sitemaps.views import sitemap as sitemap_page
 
 
 
 urlpatterns = [
     # sitemaps 
-    path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap.xml', sitemap_index, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap-<section>.xml', sitemap_page, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 
 
     # api 

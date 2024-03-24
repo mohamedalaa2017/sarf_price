@@ -29,6 +29,13 @@ from .serializers import CurrencyPricesSerializer, GoldSerializer, PostSerialize
 from rest_framework.response import Response
 
 
+
+
+from django.contrib.sitemaps import views as sitemap_views
+from exchange_rates.sitemaps import ExchangeRatesSitemap
+
+
+
 # api 
 class CurrencyPricesListView(generics.ListAPIView):
     queryset = Currency_Prices.objects.all()

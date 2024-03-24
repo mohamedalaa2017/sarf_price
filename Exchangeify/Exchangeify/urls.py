@@ -47,10 +47,6 @@ urlpatterns += i18n_patterns(
     path("adminsitepanal/", admin.site.urls),
     path("", include("exchange_rates.urls")),
 
-    #sitemap
-    path('sitemap.xml', sitemap_views.index, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path('sitemap-<section>.xml', sitemap_views.sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-
     prefix_default_language=False,
 
 
